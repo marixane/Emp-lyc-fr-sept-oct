@@ -359,13 +359,13 @@ button:disabled {
   gap: 2px;
   height: 1006px;
   overflow: hidden;
-  padding-top: 8px;
+  padding-top: 5px;
 }
 
 .exam-exercise {
   border: 2px solid #111;
   border-radius: 10px;
-  padding: 22px 18px 16px;
+  padding: 38px 18px 14px;
   position: relative;
   overflow: visible;
 }
@@ -397,7 +397,7 @@ button:disabled {
 
 .exercise-title {
   position: absolute;
-  top: -15px;
+  top: 6px;
   left: 18px;
   background: white;
   border: 2px solid #111;
@@ -406,7 +406,7 @@ button:disabled {
   font-weight: bold;
   font-size: 16px;
   z-index: 5;
-  box-shadow: 0 0 0 1px white;
+  box-shadow: none;
 }
 
 .exercise-title-controls {
