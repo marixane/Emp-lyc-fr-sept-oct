@@ -9,3 +9,7 @@
 .three-cell-header {
   grid-template-columns: 25% 50% 25%;
 }
+
+.preview-zone .second-page {
+  margin-top: 56px;
+}
