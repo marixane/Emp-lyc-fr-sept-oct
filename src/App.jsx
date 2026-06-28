@@ -299,7 +299,7 @@ function App() {
         <p className="eyebrow">A4 Exam Maker</p>
         <h1>Créer une feuille A4 avec entête fixe</h1>
         <p className="intro">
-          Clique directement sur la zone de photo dans l’aperçu pour choisir un fichier.
+          Les points se modifient dans le titre de chaque exercice. Le titre du devoir se modifie directement dans l’entête.
         </p>
 
         <div className="form-group">
@@ -331,16 +331,6 @@ function App() {
         </div>
 
         <div className="form-group">
-          <label>Titre du devoir</label>
-          <textarea
-            value={testTitle}
-            onChange={(e) => setTestTitle(e.target.value)}
-            rows="2"
-            placeholder="Exemple : Devoir individuel de Mathématique"
-          />
-        </div>
-
-        <div className="form-group">
           <label>Professeur</label>
           <textarea
             value={teacher}
@@ -357,29 +347,6 @@ function App() {
         {exercises.map((exercise, index) => (
           <fieldset className="exercise-control-card" key={exercise.id}>
             <legend>{exercise.title} :</legend>
-
-            <div className="form-group compact-group">
-              <label>Points</label>
-              <div className="points-control compact-control">
-                <button
-                  type="button"
-                  onClick={() => changeExercisePoints(index, -1)}
-                  disabled={!canChangeExercisePoints(index, -1)}
-                  aria-label={`Diminuer les points de ${exercise.title}`}
-                >
-                  −
-                </button>
-                <strong>{formatPoints(exercise.points)}</strong>
-                <button
-                  type="button"
-                  onClick={() => changeExercisePoints(index, 1)}
-                  disabled={!canChangeExercisePoints(index, 1)}
-                  aria-label={`Augmenter les points de ${exercise.title}`}
-                >
-                  +
-                </button>
-              </div>
-            </div>
 
             <div className="form-group compact-group">
               <label>Hauteur</label>
@@ -466,7 +433,14 @@ function App() {
             </div>
 
             <div className="header-cell middle-header-cell">
-              <strong style={{ fontSize: `${getTitleFontSize(testTitle)}px` }}>{testTitle}</strong>
+              <textarea
+                className="inline-title-input"
+                value={testTitle}
+                onChange={(e) => setTestTitle(e.target.value)}
+                rows="2"
+                aria-label="Titre du devoir"
+                style={{ fontSize: `${getTitleFontSize(testTitle)}px` }}
+              />
             </div>
 
             <div className="header-cell right-header-cell">
@@ -493,8 +467,26 @@ function App() {
                     aria-label={`Modifier la hauteur de ${exercise.title}`}
                   />
                 )}
-                <div className="exercise-title">
-                  {exercise.title} : * ( {formatPoints(exercise.points)} ) *
+                <div className="exercise-title exercise-title-controls">
+                  <span>{exercise.title} : * (</span>
+                  <button
+                    type="button"
+                    onClick={() => changeExercisePoints(index, -1)}
+                    disabled={!canChangeExercisePoints(index, -1)}
+                    aria-label={`Diminuer les points de ${exercise.title}`}
+                  >
+                    −
+                  </button>
+                  <strong>{formatPoints(exercise.points)}</strong>
+                  <button
+                    type="button"
+                    onClick={() => changeExercisePoints(index, 1)}
+                    disabled={!canChangeExercisePoints(index, 1)}
+                    aria-label={`Augmenter les points de ${exercise.title}`}
+                  >
+                    +
+                  </button>
+                  <span>) *</span>
                 </div>
                 <div
                   className="exercise-body clickable-photo-zone"
