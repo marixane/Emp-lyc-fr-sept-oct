@@ -42,6 +42,19 @@
   color: #777;
 }
 
+.resize-handle {
+  top: -20px;
+  left: 270px;
+  right: -8px;
+  height: 44px;
+  width: auto;
+  cursor: ns-resize;
+  background: transparent;
+  border: 0;
+  opacity: 0;
+  z-index: 4;
+}
+
 .tiny-duration-control {
   max-width: 170px;
   grid-template-columns: 18px minmax(112px, 1fr) 18px;
