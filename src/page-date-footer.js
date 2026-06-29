@@ -14,6 +14,11 @@ function updateDateInput() {
   if (input.value !== window.__pageDateValue) input.value = window.__pageDateValue;
 }
 
+function togglePageDate() {
+  window.__showPageDate = !window.__showPageDate;
+  syncPageDates();
+}
+
 function syncPageDates() {
   var text = formatDateValue(window.__pageDateValue);
   document.body.classList.toggle('hide-page-date', !window.__showPageDate);
@@ -48,10 +53,15 @@ function ensureDateControls() {
     oldButton.remove();
   });
 
+  var existingLabel = document.querySelector('label.page-date-control');
+  if (existingLabel) existingLabel.remove();
+
   if (!document.querySelector('.page-date-control')) {
-    var wrap = document.createElement('label');
+    var wrap = document.createElement('div');
     wrap.className = 'page-date-control on';
-    wrap.title = 'Cliquer pour afficher/masquer la date. Choisir une date avec le calendrier.';
+    wrap.setAttribute('role', 'button');
+    wrap.tabIndex = 0;
+    wrap.title = 'Cliquer sur le cadre pour afficher/masquer la date. Cliquer sur le calendrier pour choisir la date.';
 
     var title = document.createElement('span');
     title.className = 'page-date-title';
@@ -62,15 +72,30 @@ function ensureDateControls() {
     input.className = 'page-date-input';
     input.value = window.__pageDateValue;
 
+    input.addEventListener('click', function (event) {
+      event.stopPropagation();
+    });
+
+    input.addEventListener('mousedown', function (event) {
+      event.stopPropagation();
+    });
+
     input.addEventListener('change', function () {
       window.__pageDateValue = input.value || new Date().toISOString().slice(0, 10);
       window.__showPageDate = true;
       syncPageDates();
     });
 
-    wrap.addEventListener('click', function () {
-      window.__showPageDate = !window.__showPageDate;
-      syncPageDates();
+    wrap.addEventListener('click', function (event) {
+      if (event.target && event.target.closest && event.target.closest('.page-date-input')) return;
+      togglePageDate();
+    });
+
+    wrap.addEventListener('keydown', function (event) {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        togglePageDate();
+      }
     });
 
     wrap.appendChild(title);
