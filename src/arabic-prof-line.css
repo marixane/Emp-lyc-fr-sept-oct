@@ -19,14 +19,14 @@ body.arabic-mode .exam-header .header-cell {
 body.arabic-mode .left-header-cell {
   grid-column: 3 !important;
   order: 3 !important;
-  border-left: 1px solid #111111 !important;
+  border-left: 2px solid #111111 !important;
   border-right: 0 !important;
 }
 
 body.arabic-mode .middle-header-cell {
   grid-column: 2 !important;
   order: 2 !important;
-  border-left: 1px solid #111111 !important;
+  border-left: 2px solid #111111 !important;
   border-right: 0 !important;
 }
 
