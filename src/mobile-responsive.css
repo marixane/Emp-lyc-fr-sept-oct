@@ -1,0 +1,91 @@
+@media (max-width: 768px) {
+  html,
+  body,
+  #root {
+    width: 100% !important;
+    min-width: 0 !important;
+    overflow-x: hidden !important;
+  }
+
+  .app-shell {
+    width: 100% !important;
+    min-width: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 14px !important;
+    padding: 10px !important;
+    box-sizing: border-box !important;
+  }
+
+  .panel {
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    margin: 0 !important;
+    padding: 12px !important;
+    box-sizing: border-box !important;
+  }
+
+  .panel button,
+  .panel label,
+  .duration-control button,
+  .compact-control button {
+    min-height: 38px !important;
+    touch-action: manipulation !important;
+  }
+
+  .page-count-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 8px !important;
+  }
+
+  .preview-zone {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 18px !important;
+    padding: 8px 0 40px !important;
+    overflow-x: auto !important;
+  }
+
+  .preview-zone .a4-page {
+    transform: scale(0.44) !important;
+    transform-origin: top center !important;
+    margin: 0 auto calc(-56% * 1px) !important;
+    flex: 0 0 auto !important;
+  }
+
+  .preview-zone .a4-page:not(.is-exporting) {
+    zoom: 1 !important;
+  }
+
+  .exam-header textarea,
+  .inline-title-input,
+  .inline-class-input,
+  .inline-prof-input {
+    pointer-events: auto !important;
+  }
+
+  .photo-overlay-tools {
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    transform: scale(1.35) !important;
+    transform-origin: top left !important;
+  }
+}
+
+@media (max-width: 430px) {
+  .preview-zone .a4-page {
+    transform: scale(0.40) !important;
+  }
+
+  .page-count-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
