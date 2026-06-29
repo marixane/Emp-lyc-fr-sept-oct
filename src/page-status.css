@@ -211,6 +211,7 @@
 .exercise-title {
   top: -9px !important;
   left: 12px !important;
+  z-index: 60 !important;
 }
 
 .exercise-title-controls {
@@ -248,10 +249,14 @@
 
 .exam-page.has-bar-ribbon .draggable-photo,
 .exam-page.has-bar-ribbon .white-mask,
-.exam-page.has-bar-ribbon .empty-zone,
-.exam-page.has-bar-ribbon .photo-overlay-tools {
+.exam-page.has-bar-ribbon .empty-zone {
   position: relative;
   z-index: 3;
+}
+
+.exam-page.has-bar-ribbon .photo-overlay-tools {
+  position: absolute;
+  z-index: 70;
 }
 
 .exam-page.has-bar-ribbon .page-number {
