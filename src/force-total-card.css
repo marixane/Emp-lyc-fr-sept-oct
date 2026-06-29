@@ -52,7 +52,7 @@ html body .app-shell .panel label.total-mode-control input {
 
 .exam-page.is-exporting .exercise-body {
   background-color: #ffffff !important;
-  background-image: linear-gradient(to bottom, transparent 0, transparent 27px, #d4d4d4 28px, #d4d4d4 28.7px, transparent 28.7px) !important;
+  background-image: linear-gradient(to bottom, transparent 0, transparent 27px, #eeeeee 28px, #eeeeee 28.55px, transparent 28.55px) !important;
   background-size: 100% 29px !important;
   background-repeat: repeat !important;
 }
