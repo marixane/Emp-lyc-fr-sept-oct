@@ -13,7 +13,7 @@ const AR_HEADER = {
   level: 'قسم : 2 باك ع.ف',
   titleTop: 'فرض محروس',
   titleMiddle: 'الرياضيات',
-  titleBottom: 'ذ. مروان',
+  titleBottom: '',
   rightTop: 'ثانوية الجامعي، طنجة',
   rightBottom: 'رقم : 1 الدورة : 1'
 };
