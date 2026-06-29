@@ -62,6 +62,17 @@
   display: none !important;
 }
 
+.exam-page,
+.exam-page textarea,
+.exam-page input,
+.exam-page button,
+.exam-page strong,
+.exam-page span,
+.exam-page div {
+  font-family: "Chalkboard SE", "Chalkboard", "Comic Sans MS", cursive !important;
+  font-weight: 700 !important;
+}
+
 .left-header-cell,
 .middle-header-cell,
 .right-header-cell {
@@ -101,7 +112,7 @@
   resize: none !important;
   border: 0 !important;
   background: transparent !important;
-  font-weight: 900 !important;
+  font-weight: 700 !important;
   display: block !important;
 }
 
