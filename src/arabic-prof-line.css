@@ -1,0 +1,8 @@
+body.arabic-mode .split-title-cell .title-line-bottom {
+  display: block !important;
+  font-size: 15px !important;
+}
+
+body.arabic-mode .split-title-cell {
+  gap: 1mm !important;
+}
