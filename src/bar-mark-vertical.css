@@ -1,0 +1,8 @@
+.bar-mark {
+  left: -2px !important;
+  cursor: ns-resize !important;
+}
+
+.bar-mark::after {
+  cursor: ns-resize !important;
+}
