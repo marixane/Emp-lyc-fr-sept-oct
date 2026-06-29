@@ -1,0 +1,19 @@
+.page-count-grid:has(.page-count-card:nth-child(2) .compact-control button:first-child:disabled) .page-count-card:nth-child(3),
+.page-count-grid:has(.page-count-card:nth-child(3) .compact-control button:first-child:disabled) .page-count-card:nth-child(4),
+.page-count-grid:has(.page-count-card:nth-child(4) .compact-control button:first-child:disabled) .page-count-card:nth-child(5),
+.page-count-grid:has(.page-count-card:nth-child(5) .compact-control button:first-child:disabled) .page-count-card:nth-child(6) {
+  opacity: 0.45 !important;
+  background: #e5e7eb !important;
+  border-color: #cbd5e1 !important;
+}
+
+.page-count-grid:has(.page-count-card:nth-child(2) .compact-control button:first-child:disabled) .page-count-card:nth-child(3) .compact-control button:last-child,
+.page-count-grid:has(.page-count-card:nth-child(3) .compact-control button:first-child:disabled) .page-count-card:nth-child(4) .compact-control button:last-child,
+.page-count-grid:has(.page-count-card:nth-child(4) .compact-control button:first-child:disabled) .page-count-card:nth-child(5) .compact-control button:last-child,
+.page-count-grid:has(.page-count-card:nth-child(5) .compact-control button:first-child:disabled) .page-count-card:nth-child(6) .compact-control button:last-child {
+  pointer-events: none !important;
+  background: linear-gradient(145deg, #cbd5e1 0%, #94a3b8 100%) !important;
+  box-shadow: none !important;
+  transform: none !important;
+  cursor: not-allowed !important;
+}
