@@ -16,6 +16,7 @@ import './bar-mark-click-guard.js';
 import './photo-buttons-below-zoom.css';
 import './clear-bar-marks-on-title-points.js';
 import './small-toggle-icons.css';
+import './live-lines-toggle.css';
 
 createRoot(document.getElementById('root')).render(
   <React.StrictMode>
