@@ -67,34 +67,48 @@
   flex-direction: column !important;
   align-items: center !important;
   justify-content: center !important;
-  gap: 1px !important;
-  padding: 4px 6px !important;
+  gap: 0 !important;
+  padding: 2px 6px !important;
 }
 
 .split-title-cell .title-line {
   width: 100% !important;
-  min-height: 18px !important;
-  height: 18px !important;
+  min-height: 15px !important;
+  height: 15px !important;
   padding: 0 4px !important;
-  line-height: 18px !important;
+  margin: 0 !important;
+  line-height: 15px !important;
   text-align: center !important;
   resize: none !important;
   overflow: hidden !important;
   border: 0 !important;
   background: transparent !important;
   font-weight: 900 !important;
+  display: block !important;
 }
 
 .split-title-cell .title-line-top {
-  font-size: 16px !important;
+  font-size: 15px !important;
 }
 
 .split-title-cell .title-line-middle {
-  font-size: 16px !important;
+  font-size: 15px !important;
 }
 
 .split-title-cell .title-line-bottom {
-  font-size: 13px !important;
+  font-size: 12px !important;
+}
+
+.exam-page.is-exporting .split-title-cell {
+  gap: 0 !important;
+  padding-top: 1px !important;
+  padding-bottom: 1px !important;
+}
+
+.exam-page.is-exporting .split-title-cell .title-line {
+  height: 14px !important;
+  min-height: 14px !important;
+  line-height: 14px !important;
 }
 
 .total-mode-control {
