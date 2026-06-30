@@ -133,3 +133,10 @@
   font-size: 12px !important;
   border-radius: 9px !important;
 }
+
+.panel {
+  height: 2274px !important;
+  min-height: 2274px !important;
+  max-height: 2274px !important;
+  overflow-y: auto !important;
+}
