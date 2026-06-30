@@ -142,6 +142,21 @@ function syncDurationLabels() {
   });
 }
 
+function scheduleDurationSync() {
+  syncDurationLabels();
+  setTimeout(syncDurationLabels, 0);
+  setTimeout(syncDurationLabels, 40);
+  setTimeout(syncDurationLabels, 120);
+}
+
+function bindDurationButtons() {
+  document.querySelectorAll('.tiny-duration-control button').forEach(function (button) {
+    if (button.dataset.durationSyncBound === 'true') return;
+    button.dataset.durationSyncBound = 'true';
+    button.addEventListener('click', scheduleDurationSync);
+  });
+}
+
 function syncExerciseTitles() {
   document.querySelectorAll('.exam-exercise:not(.blank-exercise) .exercise-title-controls > span:first-child').forEach(function (span) {
     var controls = span.closest('.exercise-title-controls');
@@ -161,7 +176,8 @@ function syncLanguageMode() {
   document.documentElement.setAttribute('dir', 'ltr');
   syncLanguageButton();
   syncHeaderLanguage();
-  syncDurationLabels();
+  bindDurationButtons();
+  scheduleDurationSync();
   syncExerciseTitles();
   if (typeof formatExercisePointLabels === 'function') formatExercisePointLabels();
 }
@@ -173,6 +189,7 @@ setTimeout(syncLanguageMode, 400);
 new MutationObserver(function () {
   syncLanguageButton();
   syncHeaderLanguage();
-  syncDurationLabels();
+  bindDurationButtons();
+  scheduleDurationSync();
   syncExerciseTitles();
 }).observe(document.body, { childList: true, subtree: true });
