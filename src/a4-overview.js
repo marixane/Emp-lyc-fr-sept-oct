@@ -1,7 +1,7 @@
 function disableA4OverviewForPdfButtons(panel) {
   panel.querySelectorAll(':scope > button').forEach(function (pdfButton) {
     var text = pdfButton.textContent || '';
-    if (!text.includes('Voir PDF') && !text.includes('Exporter PDF') && !text.includes('عرض ملف PDF') && !text.includes('تصدير ملف PDF')) return;
+    if (!text.includes('Voir PDF') && !text.includes('Exporter PDF')) return;
     if (pdfButton.dataset.a4OverviewPdfBound === 'true') return;
     pdfButton.dataset.a4OverviewPdfBound = 'true';
     pdfButton.addEventListener('click', function () {
@@ -55,8 +55,7 @@ function syncA4OverviewButton() {
     });
 
     var pdfButton = Array.from(panel.querySelectorAll(':scope > button')).find(function (item) {
-      var text = item.textContent || '';
-      return text.includes('Voir PDF') || text.includes('عرض ملف PDF');
+      return (item.textContent || '').includes('Voir PDF');
     });
 
     if (pdfButton && pdfButton.parentNode) {
@@ -67,11 +66,7 @@ function syncA4OverviewButton() {
   }
 
   var active = document.body.classList.contains('a4-overview-mode');
-  if (window.__examLanguage === 'ar') {
-    button.textContent = active ? 'معاينة عادية' : 'معاينة A4';
-  } else {
-    button.textContent = active ? 'Aperçu normal' : 'Aperçu A4';
-  }
+  button.textContent = active ? 'Aperçu normal' : 'Aperçu A4';
   button.classList.toggle('active', active);
 }
 
