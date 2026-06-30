@@ -1,6 +1,21 @@
+function disableA4OverviewForPdfButtons(panel) {
+  panel.querySelectorAll(':scope > button').forEach(function (pdfButton) {
+    var text = pdfButton.textContent || '';
+    if (!text.includes('Voir PDF') && !text.includes('Exporter PDF')) return;
+    if (pdfButton.dataset.a4OverviewPdfBound === 'true') return;
+    pdfButton.dataset.a4OverviewPdfBound = 'true';
+    pdfButton.addEventListener('click', function () {
+      document.body.classList.remove('a4-overview-mode');
+      syncA4OverviewButton();
+    }, true);
+  });
+}
+
 function syncA4OverviewButton() {
   var panel = document.querySelector('.panel');
   if (!panel) return;
+
+  disableA4OverviewForPdfButtons(panel);
 
   var button = document.querySelector('.a4-overview-toggle');
   if (!button) {
