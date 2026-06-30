@@ -26,6 +26,16 @@ body.arabic-mode .language-toggle {
   color: #065f46 !important;
 }
 
+body.arabic-mode .tiny-duration-control strong {
+  direction: rtl !important;
+  unicode-bidi: isolate !important;
+}
+
+body:not(.arabic-mode) .tiny-duration-control strong {
+  direction: ltr !important;
+  unicode-bidi: isolate !important;
+}
+
 body.arabic-mode .exam-page {
   transform: scaleX(-1) !important;
   transform-origin: center center !important;
