@@ -3,13 +3,15 @@ window.__examLanguage = window.__examLanguage || localStorage.getItem('examLangu
 const FR_HEADER = {
   rightTop: 'Lycée El jamai ,Tanger',
   individualTitle: 'Devoir individuel',
-  subject: 'Mathématique'
+  subject: 'Mathématique',
+  level: 'Classe : 2 Bac SPF'
 };
 
 const AR_HEADER = {
   rightTop: 'ثانوية الجامعي، طنجة',
   individualTitle: 'فرض محروس',
-  subject: 'الرياضيات'
+  subject: 'الرياضيات',
+  level: 'قسم : 2 باك ع.ف'
 };
 
 function setInputValue(selector, value) {
@@ -24,6 +26,13 @@ function setInputValue(selector, value) {
 function syncHeaderLanguage() {
   var header = window.__examLanguage === 'ar' ? AR_HEADER : FR_HEADER;
   setInputValue('.right-line-top', header.rightTop);
+
+  var levelInput = document.querySelector('.inline-class-input');
+  if (levelInput) {
+    var currentLevel = levelInput.value || '';
+    var isLevel = currentLevel === FR_HEADER.level || currentLevel === AR_HEADER.level;
+    if (isLevel) setInputValue('.inline-class-input', header.level);
+  }
 
   var titleTop = document.querySelector('.title-line-top');
   if (titleTop) {
