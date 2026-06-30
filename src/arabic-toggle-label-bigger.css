@@ -1,10 +1,25 @@
 body.arabic-mode .panel .pdf-lines-toggle::after,
 body.arabic-mode .panel .bar-ribbon-toggle::after {
-  font-size: 13.5px !important;
+  font-size: 14px !important;
   line-height: 1.18 !important;
   font-weight: 950 !important;
 }
 
 body.arabic-mode .panel .bar-ribbon-toggle::after {
   line-height: 1.12 !important;
+}
+
+body.arabic-mode .panel .page-date-title,
+body.arabic-mode .panel .note-scale-title,
+body.arabic-mode .panel .page-count-card label,
+body.arabic-mode .panel .page-date-input,
+body.arabic-mode .panel .note-scale-button,
+body.arabic-mode .panel .page-count-card .compact-control strong {
+  font-size: 13.5px !important;
+}
+
+body.arabic-mode .panel .language-toggle,
+body.arabic-mode .panel .individual-toggle,
+body.arabic-mode .panel .a4-overview-toggle {
+  font-size: 16.5px !important;
 }
