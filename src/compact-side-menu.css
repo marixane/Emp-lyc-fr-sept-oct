@@ -3,10 +3,25 @@
   padding: 10px 10px 12px !important;
 }
 
-.panel .eyebrow,
 .panel .form-group > label,
 .exercise-count-section h2 {
   display: none !important;
+}
+
+.panel .eyebrow {
+  display: block !important;
+  width: 100% !important;
+  margin: 0 0 6px 0 !important;
+  padding: 7px 8px !important;
+  border-radius: 10px !important;
+  background: #eff6ff !important;
+  border: 1px solid #bfdbfe !important;
+  color: #1d4ed8 !important;
+  font-size: 13px !important;
+  font-weight: 950 !important;
+  line-height: 1 !important;
+  text-align: center !important;
+  letter-spacing: 0.02em !important;
 }
 
 .panel .form-group {
