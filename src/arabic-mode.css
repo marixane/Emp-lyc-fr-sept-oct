@@ -222,6 +222,7 @@ body.arabic-mode .exam-page.is-exporting .exercise-title-controls {
 
 body.arabic-mode .exam-page.is-exporting .exercise-title-controls > span:first-child {
   margin-left: 15px !important;
+  margin-right: 2mm !important;
 }
 
 body.arabic-mode .exam-page.is-exporting .exercise-title-controls > span.points-decoration:nth-of-type(2) {
