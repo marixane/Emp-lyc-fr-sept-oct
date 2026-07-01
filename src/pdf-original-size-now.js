@@ -10,23 +10,47 @@ function enableOriginalPdfSizeNow() {
   }, 12000);
 }
 
-function isPdfAction(target) {
+function getPdfButton(target) {
   const button = target && target.closest && target.closest('button');
-  if (!button) return false;
+  if (!button) return null;
   const text = String(button.textContent || '').trim().toLowerCase();
-  return text.includes('voir pdf') || text.includes('exporter pdf') || text.includes('préparation') || text.includes('export en cours');
+  if (text.includes('voir pdf') || text.includes('exporter pdf')) return button;
+  return null;
+}
+
+function waitForOriginalA4Ready(callback) {
+  requestAnimationFrame(function () {
+    requestAnimationFrame(function () {
+      setTimeout(callback, 40);
+    });
+  });
 }
 
 document.addEventListener('pointerdown', function (event) {
-  if (isPdfAction(event.target)) enableOriginalPdfSizeNow();
+  if (getPdfButton(event.target)) enableOriginalPdfSizeNow();
 }, true);
 
 document.addEventListener('mousedown', function (event) {
-  if (isPdfAction(event.target)) enableOriginalPdfSizeNow();
+  if (getPdfButton(event.target)) enableOriginalPdfSizeNow();
 }, true);
 
 document.addEventListener('click', function (event) {
-  if (isPdfAction(event.target)) enableOriginalPdfSizeNow();
+  const button = getPdfButton(event.target);
+  if (!button) return;
+
+  enableOriginalPdfSizeNow();
+
+  if (window.__pdfOriginalReplayClick) return;
+
+  event.preventDefault();
+  event.stopPropagation();
+  if (event.stopImmediatePropagation) event.stopImmediatePropagation();
+
+  waitForOriginalA4Ready(function () {
+    window.__pdfOriginalReplayClick = true;
+    button.click();
+    window.__pdfOriginalReplayClick = false;
+  });
 }, true);
 
 window.enableOriginalPdfSizeNow = enableOriginalPdfSizeNow;
