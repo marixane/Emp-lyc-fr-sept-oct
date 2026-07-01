@@ -69,5 +69,6 @@ import './page-exos-label.js';
 import './preview-spacing-polish.css';
 import './top-education-navbar.css';
 import './top-education-navbar.js';
+import './free-exercise-title-height.css';
 
 createRoot(document.getElementById('root')).render(<React.StrictMode><App /></React.StrictMode>);
