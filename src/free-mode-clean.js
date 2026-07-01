@@ -1,4 +1,16 @@
+function isFreeModeActive() {
+  var notes = document.querySelector('.note-scale-control:not(.homework-disabled-note)');
+  if (!notes) return false;
+  return !notes.querySelector('.note-scale-button.active');
+}
+
+function syncFreeModeBodyClass() {
+  if (!document.body) return;
+  document.body.classList.toggle('no-title-points', isFreeModeActive());
+}
+
 function cleanFreeModeExerciseTitles() {
+  syncFreeModeBodyClass();
   if (!document.body.classList.contains('no-title-points')) return;
   document.querySelectorAll('.exam-exercise:not(.blank-exercise) .exercise-title-controls > span:first-child').forEach(function (span) {
     var text = span.textContent || '';
@@ -18,6 +30,12 @@ setTimeout(syncFreeModeClean, 700);
 
 document.addEventListener('click', function () {
   setTimeout(syncFreeModeClean, 80);
+  setTimeout(syncFreeModeClean, 250);
+});
+
+document.addEventListener('input', function () {
+  setTimeout(syncFreeModeClean, 80);
 });
 
 window.cleanFreeModeExerciseTitles = cleanFreeModeExerciseTitles;
+window.syncFreeModeBodyClass = syncFreeModeBodyClass;
