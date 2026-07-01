@@ -1,3 +1,10 @@
+:root {
+  --two-page-scale: 1;
+  --two-page-gap: 16px;
+  --two-page-page-w: calc(794px * var(--two-page-scale));
+  --two-page-page-h: calc(1123px * var(--two-page-scale));
+}
+
 .two-page-view-toggle {
   display: flex !important;
   align-items: center !important;
@@ -82,35 +89,29 @@ body.two-page-view .app-shell {
 
 body.two-page-view .preview-zone {
   display: grid !important;
-  grid-template-columns: repeat(2, 794px) !important;
-  column-gap: 16px !important;
-  row-gap: 34px !important;
-  width: 1604px !important;
-  min-width: 1604px !important;
+  grid-template-columns: repeat(2, var(--two-page-page-w)) !important;
+  grid-auto-rows: var(--two-page-page-h) !important;
+  column-gap: var(--two-page-gap) !important;
+  row-gap: 28px !important;
+  width: calc(var(--two-page-page-w) * 2 + var(--two-page-gap)) !important;
+  min-width: calc(var(--two-page-page-w) * 2 + var(--two-page-gap)) !important;
   max-width: none !important;
   overflow: visible !important;
   padding-left: 4px !important;
-  transform-origin: top left !important;
+  transform: none !important;
 }
 
 body.two-page-view .preview-zone .a4-page,
 body.two-page-view .a4-page {
   margin: 0 !important;
+  transform: scale(var(--two-page-scale)) !important;
+  transform-origin: top left !important;
 }
 
 body.two-page-view .preview-zone .a4-page:last-child,
 body.two-page-view .a4-page:last-child {
   margin-bottom: 220px !important;
 }
-
-body.two-page-view.two-page-zoom-100 .preview-zone { transform: scale(1) !important; }
-body.two-page-view.two-page-zoom-95 .preview-zone { transform: scale(0.95) !important; }
-body.two-page-view.two-page-zoom-90 .preview-zone { transform: scale(0.90) !important; }
-body.two-page-view.two-page-zoom-84 .preview-zone { transform: scale(0.84) !important; }
-body.two-page-view.two-page-zoom-78 .preview-zone { transform: scale(0.78) !important; }
-body.two-page-view.two-page-zoom-72 .preview-zone { transform: scale(0.72) !important; }
-body.two-page-view.two-page-zoom-66 .preview-zone { transform: scale(0.66) !important; }
-body.two-page-view.two-page-zoom-60 .preview-zone { transform: scale(0.60) !important; }
 
 @media print {
   .two-page-view-toggle {
@@ -125,6 +126,7 @@ body.two-page-view.two-page-zoom-60 .preview-zone { transform: scale(0.60) !impo
   }
 
   body.two-page-view .a4-page {
+    transform: none !important;
     margin: 0 !important;
   }
 }
