@@ -1,20 +1,26 @@
+var previousTitleMode = null;
+
 function getTitleModeValue() {
   var title = document.querySelector('.title-line-top');
   return ((title && (title.value || title.textContent)) || '').trim();
+}
+
+function getTitleModeKind() {
+  var value = getTitleModeValue();
+  if (value === 'Devoir libre' || value === 'Devoir à la maison' || value === 'فرض منزلي') return 'free';
+  if (value === 'Devoir individuel' || value === 'فرض محروس') return 'individual';
+  return 'other';
 }
 
 function isFreeModeActive() {
   var notes = document.querySelector('.note-scale-control:not(.homework-disabled-note)');
   if (!notes) return false;
 
-  var value = getTitleModeValue();
-
-  return value === 'Devoir libre' || value === 'Devoir à la maison' || value === 'فرض منزلي';
+  return getTitleModeKind() === 'free';
 }
 
 function isIndividualModeActive() {
-  var value = getTitleModeValue();
-  return value === 'Devoir individuel' || value === 'فرض محروس';
+  return getTitleModeKind() === 'individual';
 }
 
 function updateDisplay(node, hidden) {
@@ -32,11 +38,13 @@ function syncFreeModeBarRibbon(freeMode) {
   var button = document.querySelector('.bar-ribbon-toggle');
   if (!button) return;
 
+  var currentMode = getTitleModeKind();
+
   if (freeMode && button.classList.contains('on')) {
     button.click();
   }
 
-  if (!freeMode && isIndividualModeActive() && button.classList.contains('off')) {
+  if (currentMode === 'individual' && previousTitleMode === 'free' && button.classList.contains('off')) {
     button.click();
   }
 
@@ -46,6 +54,8 @@ function syncFreeModeBarRibbon(freeMode) {
   button.style.opacity = freeMode ? '0.45' : '';
   button.style.cursor = freeMode ? 'not-allowed' : '';
   button.title = freeMode ? 'Barème désactivé en devoir libre' : '';
+
+  previousTitleMode = currentMode;
 }
 
 function cleanFreeModeExerciseTitles() {
