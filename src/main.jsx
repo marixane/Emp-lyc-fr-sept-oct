@@ -64,5 +64,6 @@ import './homework-disabled-settings.js';
 import './active-settings-green.css';
 import './arabic-toggle-label-bigger.css';
 import './a4-exam-title.js';
+import './page-exos-label.js';
 
 createRoot(document.getElementById('root')).render(<React.StrictMode><App /></React.StrictMode>);
