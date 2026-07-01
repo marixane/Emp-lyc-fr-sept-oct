@@ -1,0 +1,68 @@
+.education-top-navbar {
+  width: 100% !important;
+  height: 54px !important;
+  display: flex !important;
+  align-items: center !important;
+  padding: 0 18px !important;
+  background: #0f172a !important;
+  border-bottom: 1px solid #334155 !important;
+  box-shadow: 0 8px 22px #00000044 !important;
+  color: white !important;
+  position: relative !important;
+  z-index: 500 !important;
+}
+
+.education-brand {
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  height: 100% !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+}
+
+.education-title-wrap {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  line-height: 1.05 !important;
+}
+
+.education-title-wrap strong {
+  font-size: 22px !important;
+  font-weight: 900 !important;
+  letter-spacing: 0.4px !important;
+}
+
+.education-title-wrap span {
+  margin-top: 3px !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.8px !important;
+  text-transform: uppercase !important;
+  color: #bfdbfe !important;
+}
+
+.education-logo {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 34px !important;
+  height: 34px !important;
+  border-radius: 12px !important;
+  background: #1e293b !important;
+  border: 1px solid #475569 !important;
+  font-size: 19px !important;
+}
+
+.education-logo-pencil,
+.education-logo-cap {
+  width: 30px !important;
+  height: 30px !important;
+  font-size: 16px !important;
+}
+
+@media print {
+  .education-top-navbar {
+    display: none !important;
+  }
+}
