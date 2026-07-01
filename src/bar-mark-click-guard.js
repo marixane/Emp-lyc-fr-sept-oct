@@ -16,16 +16,13 @@ function blockNextPhotoClick(ms) {
 document.addEventListener('mousedown', function (event) {
   if (isGradingMark(event.target)) {
     gradingMarkActive = true;
-    blockNextPhotoClick(700);
-    event.stopPropagation();
+    blockNextPhotoClick(900);
   }
 }, true);
 
-document.addEventListener('mouseup', function (event) {
+document.addEventListener('mouseup', function () {
   if (gradingMarkActive) {
-    blockNextPhotoClick(700);
-    event.preventDefault();
-    event.stopPropagation();
+    blockNextPhotoClick(900);
     setTimeout(function () {
       gradingMarkActive = false;
     }, 350);
@@ -43,6 +40,5 @@ document.addEventListener('click', function (event) {
 document.addEventListener('dragstart', function (event) {
   if (isGradingMark(event.target)) {
     event.preventDefault();
-    event.stopPropagation();
   }
 }, true);
