@@ -1,11 +1,12 @@
-function renameA4ExamTitle() {
+function removeA4ExamPanelTitle() {
   var title = document.querySelector('.panel .eyebrow');
-  if (title && title.textContent.trim() === 'A4 Exam Maker') {
-    title.textContent = 'A4 Exam';
+  if (title) {
+    title.remove();
   }
 }
 
-renameA4ExamTitle();
-setTimeout(renameA4ExamTitle, 100);
-setTimeout(renameA4ExamTitle, 300);
-setTimeout(renameA4ExamTitle, 700);
+removeA4ExamPanelTitle();
+setTimeout(removeA4ExamPanelTitle, 100);
+setTimeout(removeA4ExamPanelTitle, 300);
+setTimeout(removeA4ExamPanelTitle, 700);
+setTimeout(removeA4ExamPanelTitle, 1200);
