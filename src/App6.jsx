@@ -3,7 +3,7 @@ import { useRef, useState } from 'react';
 const MAX_PAGES = 6;
 const MAX_EX = 6;
 const H1 = 990;
-const HN = 840;
+const HN = 1050;
 const MIN_H = 120;
 const MIN_H_EXTRA = Number('5');
 const DURATIONS = ['30 min', '1 h', '1 h 30', '2 h', '2 h 30', '3 h', '3 h 30', '4 h'];
