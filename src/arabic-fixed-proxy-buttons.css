@@ -1,0 +1,7 @@
+body.arabic-mode .exam-page .a4-proxy-control {
+  transform: translateX(-50%) !important;
+}
+
+body.arabic-mode .exam-page .page-number-safe-controls {
+  transform: translateX(-50%) !important;
+}
