@@ -12,6 +12,13 @@ function getPdfButton(target) {
   return null;
 }
 
+function findPdfPanelButton(mode) {
+  const wanted = mode === 'preview' ? 'voir pdf' : 'exporter pdf';
+  return Array.from(document.querySelectorAll('.panel button')).find(function (button) {
+    return String(button.textContent || '').trim().toLowerCase().includes(wanted);
+  }) || null;
+}
+
 function wait(ms) {
   return new Promise(function (resolve) { setTimeout(resolve, ms); });
 }
@@ -185,9 +192,11 @@ async function makeOriginalPdf() {
 async function runDirectPdf(button, mode, previewWindow) {
   if (pdfDirectBusy) return;
   pdfDirectBusy = true;
-  const previousText = button.textContent;
-  button.disabled = true;
-  button.textContent = mode === 'preview' ? 'Préparation...' : 'Export en cours...';
+  const previousText = button ? button.textContent : '';
+  if (button) {
+    button.disabled = true;
+    button.textContent = mode === 'preview' ? 'Préparation...' : 'Export en cours...';
+  }
 
   try {
     const pdf = await makeOriginalPdf();
@@ -199,11 +208,24 @@ async function runDirectPdf(button, mode, previewWindow) {
       pdf.save('devoir-a4.pdf');
     }
   } finally {
-    button.disabled = false;
-    button.textContent = previousText;
+    if (button) {
+      button.disabled = false;
+      button.textContent = previousText;
+    }
     pdfDirectBusy = false;
   }
 }
+
+function startPdfAction(mode) {
+  const safeMode = mode === 'download' ? 'download' : 'preview';
+  const button = findPdfPanelButton(safeMode);
+  if (button && button.disabled) return false;
+  const previewWindow = safeMode === 'preview' ? window.open('', '_blank') : null;
+  runDirectPdf(button, safeMode, previewWindow);
+  return true;
+}
+
+window.startExamPdf = startPdfAction;
 
 document.addEventListener('click', function (event) {
   const action = getPdfButton(event.target);
@@ -213,6 +235,5 @@ document.addEventListener('click', function (event) {
   event.stopPropagation();
   if (event.stopImmediatePropagation) event.stopImmediatePropagation();
 
-  const previewWindow = action.mode === 'preview' ? window.open('', '_blank') : null;
-  runDirectPdf(action.button, action.mode, previewWindow);
+  startPdfAction(action.mode);
 }, true);
