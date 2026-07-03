@@ -27,6 +27,7 @@ function findNoteScaleOriginal(label) {
 }
 
 function getCurrentNoteScale() {
+  if (window.__noteScaleOptimistic && Date.now() < window.__noteScaleOptimisticUntil) return window.__noteScaleOptimistic;
   var b10 = findNoteScaleOriginal('/10');
   var b20 = findNoteScaleOriginal('/20');
   if (b10 && b10.classList.contains('active')) return '/10';
@@ -102,17 +103,26 @@ function getScaleFromToggle(button) {
   return text === '/10' ? '/10' : '/20';
 }
 
+function updateToggleButton(button, scale) {
+  if (!button) return;
+  button.textContent = scale;
+  button.title = 'Basculer la note ' + (scale === '/20' ? '/10' : '/20');
+  button.setAttribute('aria-label', button.title);
+}
+
 function clickNoteToggle(button) {
   var currentScale = getScaleFromToggle(button);
   var targetScale = currentScale === '/20' ? '/10' : '/20';
-  if (button) {
-    button.textContent = targetScale;
-    button.title = 'Basculer la note ' + (targetScale === '/20' ? '/10' : '/20');
-    button.setAttribute('aria-label', button.title);
-  }
+  window.__noteScaleOptimistic = targetScale;
+  window.__noteScaleOptimisticUntil = Date.now() + 900;
+  updateToggleButton(button, targetScale);
   clickNoteTotalOnly(targetScale);
   setTimeout(syncA4ProxyControls, 120);
   setTimeout(syncA4ProxyControls, 320);
+  setTimeout(function () {
+    window.__noteScaleOptimistic = null;
+    syncA4ProxyControls();
+  }, 950);
 }
 
 function makeProxy(classes, title, text, action) {
