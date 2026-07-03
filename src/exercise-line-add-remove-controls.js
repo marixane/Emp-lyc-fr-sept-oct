@@ -72,8 +72,22 @@ function clickExerciseCountButton(pageIndex, wanted) {
   return true;
 }
 
+function runExerciseButtonOnce(event, pageIndex, wanted) {
+  if (event) {
+    event.preventDefault();
+    event.stopPropagation();
+  }
+
+  var button = event && event.currentTarget;
+  var now = Date.now();
+  if (button && button._lastRunAt && now - button._lastRunAt < 260) return;
+  if (button) button._lastRunAt = now;
+
+  clickExerciseCountButton(pageIndex, wanted);
+}
+
 function ensureExerciseLineControlStyle() {
-  var css = '.exercise-line-count-controls{position:absolute!important;left:calc(50% + 0px)!important;top:3px!important;transform:translateX(-50%)!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:17px!important;column-gap:17px!important;pointer-events:auto!important;z-index:999!important}.exercise-line-count-controls button{width:48px!important;min-width:48px!important;height:24px!important;min-height:24px!important;border-radius:6px!important;border:1px solid #64748b!important;background:#ffffff!important;color:#0f172a!important;font-size:17px!important;font-weight:900!important;line-height:1!important;padding:0!important;margin:0!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;cursor:pointer!important;box-sizing:border-box!important;box-shadow:0 1px 3px rgba(15,23,42,.18)!important}.exercise-line-count-controls button:hover{background:#e0f2fe!important;border-color:#2563eb!important;color:#1d4ed8!important}.exercise-line-count-controls button.minus:hover{background:#fee2e2!important;border-color:#dc2626!important;color:#b91c1c!important}.exercise-line-count-controls button:disabled{opacity:.35!important;cursor:not-allowed!important}body.no-title-points .exercise-line-count-controls,body.no-title-points .exercise-line-count-controls button,body.arabic-mode .exercise-line-count-controls,body.arabic-mode .exercise-line-count-controls button{display:inline-flex!important}@media(max-width:1200px){.exercise-line-count-controls{left:calc(50% + 5px)!important;top:0px!important;gap:15px!important;column-gap:15px!important}.exercise-line-count-controls button{width:42px!important;min-width:42px!important;height:22px!important;min-height:22px!important;font-size:15px!important;border-radius:5px!important}}@media print{.exercise-line-count-controls{display:none!important}}';
+  var css = '.exercise-line-count-controls{position:absolute!important;left:calc(50% + 0px)!important;top:3px!important;transform:translateX(-50%)!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:17px!important;column-gap:17px!important;pointer-events:auto!important;z-index:999!important}.exercise-line-count-controls button{width:48px!important;min-width:48px!important;height:24px!important;min-height:24px!important;border-radius:6px!important;border:1px solid #64748b!important;background:#ffffff!important;color:#0f172a!important;font-size:17px!important;font-weight:900!important;line-height:1!important;padding:0!important;margin:0!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;cursor:pointer!important;box-sizing:border-box!important;box-shadow:0 1px 3px rgba(15,23,42,.18)!important;touch-action:manipulation!important;-webkit-tap-highlight-color:transparent!important}.exercise-line-count-controls button:hover{background:#e0f2fe!important;border-color:#2563eb!important;color:#1d4ed8!important}.exercise-line-count-controls button.minus:hover{background:#fee2e2!important;border-color:#dc2626!important;color:#b91c1c!important}.exercise-line-count-controls button:disabled{opacity:.35!important;cursor:not-allowed!important}body.no-title-points .exercise-line-count-controls,body.no-title-points .exercise-line-count-controls button,body.arabic-mode .exercise-line-count-controls,body.arabic-mode .exercise-line-count-controls button{display:inline-flex!important}@media(max-width:1200px){.exercise-line-count-controls{left:calc(50% + 5px)!important;top:0px!important;gap:15px!important;column-gap:15px!important}.exercise-line-count-controls button{width:46px!important;min-width:46px!important;height:28px!important;min-height:28px!important;font-size:16px!important;border-radius:6px!important}}@media print{.exercise-line-count-controls{display:none!important}}';
   var style = document.getElementById('exercise-line-add-remove-style');
   if (!style) {
     style = document.createElement('style');
@@ -99,16 +113,28 @@ function makeExerciseLineControls(pageIndex) {
   plus.textContent = '+';
   plus.title = 'Ajouter un exercice';
 
+  minus.addEventListener('pointerdown', function (event) {
+    if (event.pointerType === 'touch') runExerciseButtonOnce(event, pageIndex, '-');
+  });
+
+  plus.addEventListener('pointerdown', function (event) {
+    if (event.pointerType === 'touch') runExerciseButtonOnce(event, pageIndex, '+');
+  });
+
+  minus.addEventListener('touchend', function (event) {
+    runExerciseButtonOnce(event, pageIndex, '-');
+  }, { passive: false });
+
+  plus.addEventListener('touchend', function (event) {
+    runExerciseButtonOnce(event, pageIndex, '+');
+  }, { passive: false });
+
   minus.addEventListener('click', function (event) {
-    event.preventDefault();
-    event.stopPropagation();
-    clickExerciseCountButton(pageIndex, '-');
+    runExerciseButtonOnce(event, pageIndex, '-');
   });
 
   plus.addEventListener('click', function (event) {
-    event.preventDefault();
-    event.stopPropagation();
-    clickExerciseCountButton(pageIndex, '+');
+    runExerciseButtonOnce(event, pageIndex, '+');
   });
 
   controls.appendChild(minus);
