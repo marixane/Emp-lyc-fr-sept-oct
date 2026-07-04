@@ -5,6 +5,21 @@ body,
   overflow: hidden;
 }
 
+body.cahier-tab-active .a4-proxy-control,
+body.cahier-tab-active .a4-bar-proxy,
+body.cahier-tab-active .a4-lines-proxy,
+body.cahier-tab-active .a4-lang-proxy,
+body.cahier-tab-active .a4-free-proxy,
+body.cahier-tab-active .a4-note-toggle-proxy,
+body.cahier-tab-active .a4-footer-preview,
+body.cahier-tab-active .a4-footer-export,
+body.cahier-tab-active .a4-footer-two-page,
+body.cahier-tab-active .page-number-safe-controls {
+  display: none !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
 .app-tabs {
   display: flex;
   gap: 10px;
