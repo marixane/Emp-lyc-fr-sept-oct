@@ -63,7 +63,7 @@ body.cahier-tab-active .exercise-line-count-overlay {
 }
 
 .cahier-page {
-  padding: 24px;
+  padding: 20px 24px;
   font-family: Arial, sans-serif;
   color: #111;
 }
@@ -71,15 +71,15 @@ body.cahier-tab-active .exercise-line-count-overlay {
 .cahier-header {
   display: grid;
   grid-template-columns: 1fr 1.2fr 1fr;
-  gap: 8px;
+  gap: 7px;
   align-items: center;
-  margin-bottom: 14px;
+  margin-bottom: 10px;
 }
 
 .cahier-header h2 {
   margin: 0;
   text-align: center;
-  font-size: 28px;
+  font-size: 26px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
@@ -92,7 +92,7 @@ body.cahier-tab-active .exercise-line-count-overlay {
   background: white;
   color: #111;
   font-weight: bold;
-  font-size: 14px;
+  font-size: 13px;
 }
 
 .cahier-header input:nth-of-type(3) {
@@ -104,7 +104,7 @@ body.cahier-tab-active .exercise-line-count-overlay {
   width: 100%;
   border-collapse: collapse;
   table-layout: fixed;
-  font-size: 12px;
+  font-size: 11px;
 }
 
 .timetable-table th,
@@ -115,43 +115,43 @@ body.cahier-tab-active .exercise-line-count-overlay {
 }
 
 .timetable-table th {
-  height: 32px;
+  height: 24px;
   background: #f4f4f4;
   text-align: center;
-  font-size: 13px;
+  font-size: 12px;
 }
 
 .timetable-table th:first-child,
 .timetable-table td:first-child {
-  width: 92px;
+  width: 82px;
 }
 
 .timetable-table textarea {
   width: 100%;
-  min-height: 58px;
+  min-height: 44px;
   margin: 0;
-  padding: 6px;
+  padding: 4px;
   border: 0;
   border-radius: 0;
   resize: none;
   background: transparent;
   color: #111;
   font-family: Arial, sans-serif;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
-  line-height: 1.2;
+  line-height: 1.1;
   outline: none;
 }
 
 .timetable-table .hour-cell textarea {
-  min-height: 58px;
+  min-height: 44px;
   text-align: center;
   font-weight: bold;
 }
 
 .timetable-cell-content {
   position: relative;
-  min-height: 76px;
+  min-height: 54px;
   cursor: default;
 }
 
@@ -172,16 +172,16 @@ body.cahier-tab-active .exercise-line-count-overlay {
 }
 
 .timetable-cell-content textarea {
-  min-height: 76px;
-  padding: 32px 6px 4px;
-  font-size: 17px;
+  min-height: 54px;
+  padding: 23px 5px 2px;
+  font-size: 16px;
   font-weight: 900;
-  line-height: 1.1;
+  line-height: 1.05;
   text-align: left;
 }
 
 .timetable-cell-content textarea:not(:placeholder-shown) {
-  padding: 42px 6px 0;
+  padding: 31px 5px 0;
 }
 
 .timetable-cell-content textarea::placeholder {
@@ -200,29 +200,29 @@ body.cahier-tab-active .exercise-line-count-overlay {
 
 .room-control {
   position: absolute;
-  right: 4px;
-  bottom: 3px;
+  right: 3px;
+  bottom: 2px;
   display: flex;
   align-items: center;
-  gap: 3px;
+  gap: 2px;
   margin: 0;
-  padding: 1px 4px;
+  padding: 0 3px;
   border-radius: 4px;
   background: rgba(255, 255, 255, 0.55);
   color: rgba(17, 17, 17, 0.68);
-  font-size: 10px;
+  font-size: 9px;
   font-weight: bold;
 }
 
 .room-control input {
-  width: 38px;
-  height: 20px;
+  width: 32px;
+  height: 17px;
   margin: 0;
-  padding: 0 2px;
+  padding: 0 1px;
   border: 0;
   background: transparent;
   color: rgba(17, 17, 17, 0.78);
-  font-size: 11px;
+  font-size: 10px;
   font-weight: bold;
   text-align: center;
   outline: none;
@@ -235,9 +235,9 @@ body.cahier-tab-active .exercise-line-count-overlay {
 
 .span-tools {
   position: absolute;
-  top: 4px;
-  left: 5px;
-  right: 5px;
+  top: 3px;
+  left: 4px;
+  right: 4px;
   z-index: 2;
   display: flex;
   gap: 3px;
@@ -250,8 +250,8 @@ body.cahier-tab-active .exercise-line-count-overlay {
 }
 
 .span-tools button {
-  width: 32px;
-  height: 28px;
+  width: 27px;
+  height: 23px;
   min-width: 0;
   margin-top: 0;
   padding: 0;
@@ -259,9 +259,9 @@ body.cahier-tab-active .exercise-line-count-overlay {
   border-radius: 5px;
   background: white;
   color: #111;
-  font-size: 17px;
+  font-size: 16px;
   font-weight: 900;
-  line-height: 24px;
+  line-height: 19px;
   pointer-events: auto;
 }
 
@@ -278,7 +278,7 @@ body.cahier-tab-active .exercise-line-count-overlay {
 .span-tools .span-remove-button {
   background: #111;
   color: white;
-  font-size: 14px;
+  font-size: 13px;
 }
 
 .span-tools .span-remove-button:hover {
@@ -290,14 +290,14 @@ body.cahier-tab-active .exercise-line-count-overlay {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 18px;
-  margin-top: 16px;
+  margin-top: 12px;
   font-weight: bold;
 }
 
 .cahier-footer span {
-  min-height: 46px;
+  min-height: 36px;
   border: 2px solid #111;
-  padding: 10px;
+  padding: 8px;
 }
 
 @media print {
