@@ -14,7 +14,8 @@ body.cahier-tab-active .a4-note-toggle-proxy,
 body.cahier-tab-active .a4-footer-preview,
 body.cahier-tab-active .a4-footer-export,
 body.cahier-tab-active .a4-footer-two-page,
-body.cahier-tab-active .page-number-safe-controls {
+body.cahier-tab-active .page-number-safe-controls,
+body.cahier-tab-active .exercise-line-count-overlay {
   display: none !important;
   opacity: 0 !important;
   pointer-events: none !important;
