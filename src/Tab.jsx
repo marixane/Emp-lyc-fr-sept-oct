@@ -117,16 +117,10 @@ export default function Tab() {
 
   const handleCellClick = (dayIndex, hourIndex, cell) => {
     const normalized = normalizeCell(cell);
-    const key = `${dayIndex}-${hourIndex}`;
+    if (!normalized.text.trim()) return;
 
-    if (normalized.text.trim()) {
-      setCopiedCell(cloneCell(normalized));
-      setSelectedCell(key);
-      return;
-    }
-
-    if (!copiedCell) return;
-    duplicateCellTo(dayIndex, hourIndex, copiedCell);
+    setCopiedCell(cloneCell(normalized));
+    setSelectedCell(`${dayIndex}-${hourIndex}`);
   };
 
   const handleDragStart = (event, dayIndex, hourIndex, cell) => {
@@ -262,12 +256,11 @@ export default function Tab() {
                 if (cell.hidden) return null;
                 const hasClass = Boolean(cell.text.trim());
                 const cellKey = `${dayIndex}-${hourIndex}`;
-                const canPasteHere = !hasClass && copiedCell && canPasteCell(row, hourIndex, copiedCell);
                 const canDropHere = !hasClass && draggedCell && canPasteCell(row, hourIndex, draggedCell);
 
                 return <td key={`${hour}-${hourIndex}`} colSpan={cell.span}>
                   <div
-                    className={`timetable-cell-content ${hasClass ? 'draggable-cell' : ''} ${selectedCell === cellKey ? 'selected-cell' : ''} ${canPasteHere ? 'paste-ready-cell' : ''} ${canDropHere || dragOverCell === cellKey ? 'drop-ready-cell' : ''}`}
+                    className={`timetable-cell-content ${hasClass ? 'draggable-cell clickable-cell' : ''} ${selectedCell === cellKey ? 'selected-cell' : ''} ${canDropHere || dragOverCell === cellKey ? 'drop-ready-cell' : ''}`}
                     draggable={hasClass}
                     onDragStart={(e) => handleDragStart(e, dayIndex, hourIndex, cell)}
                     onDragEnd={() => {
@@ -277,8 +270,8 @@ export default function Tab() {
                     onDragOver={(e) => handleDragOver(e, dayIndex, hourIndex, row, hasClass)}
                     onDragLeave={() => setDragOverCell(null)}
                     onDrop={(e) => handleDrop(e, dayIndex, hourIndex, row, hasClass)}
-                    onClick={() => handleCellClick(dayIndex, hourIndex, cell)}
-                    title={hasClass ? 'Glisser cette cellule pour la dupliquer' : copiedCell ? 'Cliquer ou déposer ici pour coller' : ''}
+                    onClick={hasClass ? () => handleCellClick(dayIndex, hourIndex, cell) : undefined}
+                    title={hasClass ? 'Cliquer pour sélectionner ou glisser pour dupliquer' : draggedCell ? 'Déposer ici pour dupliquer' : ''}
                   >
                     {hasClass && <div className="span-tools no-print" onClick={(e) => e.stopPropagation()}>
                       <button type="button" onClick={() => extendCellLeft(dayIndex, hourIndex)} disabled={!canExtendLeft(row, hourIndex)}>‹</button>
@@ -292,7 +285,7 @@ export default function Tab() {
                       onClick={(e) => e.stopPropagation()}
                       onDragStart={(e) => e.preventDefault()}
                       onKeyDown={validateOnEnter}
-                      placeholder={copiedCell ? 'Cliquer ici pour coller' : 'Classe / matière'}
+                      placeholder="Classe / matière"
                       rows="4"
                     />
                     {hasClass && <label className="room-control" onClick={(e) => e.stopPropagation()}>
