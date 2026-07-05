@@ -27,10 +27,43 @@ const getCurrentCssText = () => Array.from(document.styleSheets)
 
 const wrapCssForPdf = (css) => `${'<' + 'style'}>${css}${'<' + '/style'}>`;
 
+const normalizeText = (text) => String(text || '').replace(/\s+/g, ' ').trim().toLowerCase();
+
 const isVisiblePage = (page) => {
   const rect = page.getBoundingClientRect();
   const style = window.getComputedStyle(page);
   return rect.width > 50 && rect.height > 50 && style.display !== 'none' && style.visibility !== 'hidden';
+};
+
+const getFilledGroupTitles = () => {
+  const tablePage = document.querySelector('.timetable-table')?.closest('.cahier-page');
+  if (!tablePage) return new Set();
+
+  const groupGrid = Array.from(tablePage.querySelectorAll('div'))
+    .find((node) => {
+      const children = Array.from(node.children || []);
+      return children.length === 5 && children.some((child) => /tronc commun/i.test(child.textContent || ''));
+    });
+
+  if (!groupGrid) return new Set();
+
+  return new Set(Array.from(groupGrid.children).reduce((titles, groupBox) => {
+    const children = Array.from(groupBox.children || []);
+    const title = normalizeText(children[0]?.textContent || '');
+    const classesText = normalizeText(children[1]?.textContent || '');
+    const hasRealClass = classesText && classesText !== 'déposer ici';
+    if (title && hasRealClass) titles.push(title);
+    return titles;
+  }, []));
+};
+
+const getHomeworkPageTitle = (page) => normalizeText(page.querySelector('.homework-page div')?.textContent || '');
+
+const shouldExportPage = (page, filledGroupTitles) => {
+  if (!page.classList.contains('homework-page')) return true;
+  if (!filledGroupTitles.size) return false;
+  const title = getHomeworkPageTitle(page);
+  return filledGroupTitles.has(title);
 };
 
 const prepareCloneInputs = (root) => {
@@ -46,8 +79,10 @@ const cloneA4PagesHtml = () => {
   const zone = document.querySelector('.cahier-preview-zone');
   if (!zone) return '';
 
+  const filledGroupTitles = getFilledGroupTitles();
   const pages = Array.from(zone.querySelectorAll('.a4-page, .cahier-page'))
-    .filter(isVisiblePage);
+    .filter(isVisiblePage)
+    .filter((page) => shouldExportPage(page, filledGroupTitles));
 
   const exportZone = document.createElement('div');
   exportZone.className = 'cahier-preview-zone';
