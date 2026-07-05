@@ -16,7 +16,7 @@
     "react-dom": "latest",
     "html2canvas": "latest",
     "jspdf": "latest",
-    "puppeteer-core": "latest"
+    "puppeteer-core": "21.11.0"
   },
   "devDependencies": {}
 }
