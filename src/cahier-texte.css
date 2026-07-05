@@ -522,6 +522,13 @@ body.cahier-tab-active .exercise-line-count-overlay {
   outline: none;
 }
 
+.homework-subject:empty::before {
+  content: 'Heure/Classe';
+  color: rgba(63, 64, 80, 0.28);
+  font-size: 18px;
+  font-weight: 900;
+}
+
 .homework-text {
   display: flex;
   align-items: center;
