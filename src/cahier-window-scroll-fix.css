@@ -6,7 +6,7 @@ body,
 }
 
 body.cahier-tab-active {
-  overflow-y: auto !important;
+  overflow-y: scroll !important;
   height: auto !important;
   min-height: 100vh !important;
 }
@@ -18,17 +18,11 @@ body.cahier-tab-active .clean-cahier-shell,
 body.cahier-tab-active .cahier-preview-zone {
   height: auto !important;
   max-height: none !important;
-  min-height: 100vh !important;
+  min-height: 0 !important;
   overflow-y: visible !important;
 }
 
 body.cahier-tab-active .cahier-preview-zone {
   overflow-x: auto !important;
-  padding-bottom: 48px !important;
-}
-
-@media screen and (max-height: 900px) {
-  body.cahier-tab-active {
-    overflow-y: scroll !important;
-  }
+  padding-bottom: 180px !important;
 }
