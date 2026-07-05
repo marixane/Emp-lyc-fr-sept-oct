@@ -8,10 +8,9 @@ const HOMEWORK_COLORS = ['#66c43f', '#b34bd7', '#2f80ed', '#ff3f5f', '#f2994a'];
 const GROUP_COLORS = ['#e0f2fe', '#dcfce7', '#fef3c7', '#fce7f3', '#ede9fe'];
 const GROUP_TITLES = ['Tronc Commun', '1ères Bac', '2ème Bac', 'Autres', 'Autres'];
 const DOT_TEXT = Array.from({ length: 4 }, () => '.'.repeat(74)).join('\n');
-const HOLIDAY_TEXT_BY_DATE = {
-  '05/09': 'Vacance : Aïd Al Mawlid Annabaoui',
-  '06/09': 'Vacance : Aïd Al Mawlid Annabaoui'
-};
+const HOLIDAY_RANGES = [
+  { start: '05/09', end: '06/09', text: 'Vacance : Aïd Al Mawlid Annabaoui du 05/09 au 06/09' }
+];
 
 const createCell = () => ({ text: '', room: 1, span: 1, hidden: false });
 const clampRoom = (value) => Math.min(Math.max(Number(value) || 1, 1), 80);
@@ -73,6 +72,7 @@ const getGroupIndex = (className) => {
   const level = getClassLevel(className);
   return level === 'Tronc Commun' ? 0 : level === '1ères Bac' ? 1 : level === '2ème Bac' ? 2 : 3;
 };
+const getHolidayRangeStart = (monthDate) => HOLIDAY_RANGES.find((holiday) => holiday.start === monthDate);
 
 export default function Tab() {
   const [school, setSchool] = useState('Établissement :');
@@ -156,8 +156,8 @@ export default function Tab() {
       if (!sessions.length) return null;
       const dayNumber = String(index + 1).padStart(2, '0');
       const monthDate = `${dayNumber}/09`;
-      const holidayText = HOLIDAY_TEXT_BY_DATE[monthDate];
-      return { date: `${String(rows[dayIndex]?.day || DAYS[dayIndex]).toUpperCase()} ${monthDate}`, sessions, text: holidayText || DOT_TEXT, isHoliday: Boolean(holidayText), color: HOMEWORK_COLORS[dayIndex % HOMEWORK_COLORS.length] };
+      const holidayRange = getHolidayRangeStart(monthDate);
+      return { date: `${String(rows[dayIndex]?.day || DAYS[dayIndex]).toUpperCase()} ${monthDate}`, sessions, text: holidayRange?.text || DOT_TEXT, isHoliday: Boolean(holidayRange), color: HOMEWORK_COLORS[dayIndex % HOMEWORK_COLORS.length] };
     }).filter(Boolean);
 
     return { title: GROUP_TITLES[groupIndex], color: GROUP_COLORS[groupIndex], pages: chunkEntries(entries, 5) };
