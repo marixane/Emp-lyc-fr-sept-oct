@@ -50,12 +50,13 @@ body.cahier-tab-active .homework-page .homework-text {
 }
 
 body.cahier-tab-active .homework-entry:not(.cahier-exam-entry):not(.cahier-extra-holiday-entry) .homework-text {
-  height: 96px !important;
-  min-height: 96px !important;
-  max-height: 96px !important;
-  padding-top: 15px !important;
+  height: 124px !important;
+  min-height: 124px !important;
+  max-height: 124px !important;
+  padding-top: 8px !important;
   padding-bottom: 0 !important;
-  line-height: 1.55 !important;
+  font-size: 21px !important;
+  line-height: 1.42 !important;
   overflow: hidden !important;
   pointer-events: none !important;
   user-select: none !important;
