@@ -1,15 +1,29 @@
 const EXAM_EVENTS = [
   { start: '20/01', end: '24/01', cycle: 'Primaire', text: 'Examen : Examen normalisé local' },
   { start: '23/06', end: '24/06', cycle: 'Primaire', text: 'Examen : Examen normalisé provincial' },
-  { start: '16/06', end: '17/06', cycle: 'Collège', text: 'Examen : Examen régional du collège' },
+  { start: '16/06', end: '17/06', cycle: 'Collège', text: 'Examen : Examen régional' },
   { start: '29/05', end: '30/05', cycle: 'Lycée', text: 'Examen : Examen régional 1ère Bac' },
-  { start: '01/06', end: '04/06', cycle: 'Lycée', text: 'Examen : Examen national 2ème Bac' }
+  { start: '01/06', end: '04/06', cycle: 'Lycée', text: 'Examen : Examen national 2ème Bac' },
+  { start: '03/07', end: '04/07', cycle: 'Lycée', text: 'Rattrapage : 1ère Bac' },
+  { start: '06/07', end: '09/07', cycle: 'Lycée', text: 'Rattrapage : 2ème Bac' }
 ];
 
 const EXTRA_HOLIDAY_EVENTS = [
-  { start: '20/03', end: '22/03', text: 'Vacance : Aïd Al-Fitr' },
-  { start: '27/05', end: '30/05', text: 'Vacance : Aïd Al-Adha' },
-  { start: '16/06', end: '16/06', text: 'Vacance : 1er Moharram' }
+  { start: '05/09', end: '06/09', type: 'Religieuse', text: 'Vacance religieuse : Aïd Al Mawlid Annabaoui' },
+  { start: '19/10', end: '26/10', type: 'Scolaire', text: 'Vacance scolaire : Vacances intermédiaires 1' },
+  { start: '06/11', end: '06/11', type: 'Nationale', text: 'Fête nationale : Marche Verte' },
+  { start: '18/11', end: '18/11', type: 'Nationale', text: 'Fête nationale : Fête de l’Indépendance' },
+  { start: '07/12', end: '14/12', type: 'Scolaire', text: 'Vacance scolaire : Vacances intermédiaires 2' },
+  { start: '01/01', end: '01/01', type: 'Nationale', text: 'Fête nationale : Nouvel An' },
+  { start: '11/01', end: '11/01', type: 'Nationale', text: 'Fête nationale : Manifeste de l’Indépendance' },
+  { start: '14/01', end: '14/01', type: 'Nationale', text: 'Fête nationale : Nouvel An Amazigh' },
+  { start: '25/01', end: '01/02', type: 'Scolaire', text: 'Vacance scolaire : Vacances de mi-année' },
+  { start: '15/03', end: '22/03', type: 'Scolaire', text: 'Vacance scolaire : Vacances intermédiaires 3' },
+  { start: '20/03', end: '22/03', type: 'Religieuse', text: 'Vacance religieuse : Aïd Al-Fitr' },
+  { start: '01/05', end: '01/05', type: 'Nationale', text: 'Fête nationale : Fête du Travail' },
+  { start: '03/05', end: '10/05', type: 'Scolaire', text: 'Vacance scolaire : Vacances intermédiaires 4' },
+  { start: '27/05', end: '30/05', type: 'Religieuse', text: 'Vacance religieuse : Aïd Al-Adha' },
+  { start: '16/06', end: '16/06', type: 'Religieuse', text: 'Vacance religieuse : 1er Moharram' }
 ];
 
 const EXAM_DAYS = ['DIMANCHE', 'LUNDI', 'MARDI', 'MERCREDI', 'JEUDI', 'VENDREDI', 'SAMEDI'];
@@ -125,7 +139,7 @@ const setHolidayEntryContent = (entry, event) => {
   entry.dataset.holidayStart = event.start;
   setDateRange(entry, event);
   if (textNode) textNode.textContent = event.text;
-  if (subjectNode) subjectNode.innerHTML = '';
+  if (subjectNode) subjectNode.innerHTML = `<div class="cahier-holiday-type-pill">${event.type}</div>`;
 };
 
 const placeEventEntry = (page, event, eventEntry) => {
