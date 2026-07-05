@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { Fragment, useState } from 'react';
 
 const DAYS = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
 const HOURS = ['08:00 - 09:00', '09:00 - 10:00', '10:00 - 11:00', '11:00 - 12:00', '12:00 - 13:00', '13:00 - 14:00', '14:00 - 15:00', '15:00 - 16:00', '16:00 - 17:00', '17:00 - 18:00'];
 const CELL_COLORS = ['#fff3bf', '#d8f3dc', '#dbeafe', '#ffe4e6', '#ede9fe', '#cffafe', '#fef3c7', '#dcfce7', '#e0e7ff', '#fce7f3', '#ccfbf1', '#f5f5f4', '#fbcfe8', '#bfdbfe', '#bbf7d0', '#fed7aa', '#ddd6fe', '#bae6fd', '#fecdd3', '#ccfbf1'];
+const ACTIVITY_DATE_COLORS = ['#6cc24a', '#b04ad9', '#ff3f5f', '#2f80ed', '#f2994a'];
 
 const createCell = () => ({ text: '', room: 1, span: 1, hidden: false });
 const cloneCell = (cell) => ({ ...normalizeCell(cell), hidden: false });
@@ -309,6 +310,17 @@ export default function Tab() {
     overflowWrap: 'anywhere'
   };
 
+  const activityDateTitleStyle = {
+    ...activityTitleStyle,
+    justifyContent: 'flex-start',
+    padding: '0 0 0 20px',
+    color: 'var(--activity-accent)',
+    fontSize: '18px',
+    fontWeight: 900,
+    textTransform: 'uppercase',
+    letterSpacing: '0.2px'
+  };
+
   return <main className="cahier-shell clean-cahier-shell">
     <section className="cahier-preview-zone">
       <div className="a4-page cahier-page">
@@ -406,18 +418,16 @@ export default function Tab() {
           <colgroup>
             <col style={{ width: '10%' }} />
             <col style={{ width: '10%' }} />
-            <col style={{ width: '10%' }} />
-            <col style={{ width: '30%' }} />
-            <col style={{ width: '30%' }} />
+            <col style={{ width: '35%' }} />
+            <col style={{ width: '35%' }} />
             <col style={{ width: '10%' }} />
           </colgroup>
           <thead>
             <tr className="activity-top-row">
-              <th colSpan="3"><div contentEditable suppressContentEditableWarning onKeyDown={validateOnEnter} style={activityTitleStyle}>Séquence:</div></th>
+              <th colSpan="2"><div contentEditable suppressContentEditableWarning onKeyDown={validateOnEnter} style={activityTitleStyle}>Séquence:</div></th>
               <th colSpan="3"><div contentEditable suppressContentEditableWarning onKeyDown={validateOnEnter} style={activityTitleStyle}>Titre et sujet de leçon :</div></th>
             </tr>
             <tr className="activity-label-row">
-              <th><div contentEditable suppressContentEditableWarning onKeyDown={validateOnEnter} style={activityLabelStyle}>Date</div></th>
               <th><div contentEditable suppressContentEditableWarning onKeyDown={validateOnEnter} style={activityLabelStyle}>Heure</div></th>
               <th><div contentEditable suppressContentEditableWarning onKeyDown={validateOnEnter} style={activityLabelStyle}>Classe</div></th>
               <th colSpan="2"><textarea aria-label="Espace libre" /></th>
@@ -425,13 +435,22 @@ export default function Tab() {
             </tr>
           </thead>
           <tbody>
-            {[0, 1, 2, 3, 4].map((rowIndex) => <tr key={rowIndex}>
-              <td><textarea aria-label="Date" /></td>
-              <td><textarea aria-label="Heure" /></td>
-              <td><textarea aria-label="Classe" /></td>
-              <td colSpan="2" className="activity-main-cell"><textarea defaultValue={activityText} /></td>
-              <td><textarea aria-label="Remarques" /></td>
-            </tr>)}
+            {[0, 1, 2, 3, 4].map((rowIndex) => {
+              const accent = ACTIVITY_DATE_COLORS[rowIndex % ACTIVITY_DATE_COLORS.length];
+              return <Fragment key={rowIndex}>
+                <tr className="activity-date-title-row" style={{ height: '34px', '--activity-accent': accent }}>
+                  <td colSpan="5" style={{ background: '#fff', borderLeft: `6px solid ${accent}`, borderBottom: `1.5px dashed ${accent}` }}>
+                    <div contentEditable suppressContentEditableWarning onKeyDown={validateOnEnter} style={activityDateTitleStyle}>Date</div>
+                  </td>
+                </tr>
+                <tr className="activity-entry-row" style={{ height: '174px' }}>
+                  <td><textarea aria-label="Heure" /></td>
+                  <td><textarea aria-label="Classe" /></td>
+                  <td colSpan="2" className="activity-main-cell"><textarea defaultValue={activityText} /></td>
+                  <td><textarea aria-label="Remarques" /></td>
+                </tr>
+              </Fragment>;
+            })}
           </tbody>
         </table>
       </div>
