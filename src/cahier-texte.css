@@ -548,6 +548,17 @@ body.cahier-tab-active .exercise-line-count-overlay {
 .activity-label-row textarea {
   font-size: 22px;
   font-weight: 900;
+  padding: 0 4px;
+  text-align: center;
+  overflow: hidden;
+}
+
+.activity-top-row textarea {
+  line-height: 45px;
+}
+
+.activity-label-row textarea {
+  line-height: 42px;
 }
 
 .activity-main-cell textarea {
