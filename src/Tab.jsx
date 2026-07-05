@@ -8,6 +8,10 @@ const HOMEWORK_COLORS = ['#66c43f', '#b34bd7', '#2f80ed', '#ff3f5f', '#f2994a'];
 const GROUP_COLORS = ['#e0f2fe', '#dcfce7', '#fef3c7', '#fce7f3', '#ede9fe'];
 const GROUP_TITLES = ['Tronc Commun', '1ères Bac', '2ème Bac', 'Autres', 'Autres'];
 const DOT_TEXT = Array.from({ length: 4 }, () => '.'.repeat(74)).join('\n');
+const HOLIDAY_TEXT_BY_DATE = {
+  '05/09': 'Vacance : Aïd Al Mawlid Annabaoui',
+  '06/09': 'Vacance : Aïd Al Mawlid Annabaoui'
+};
 
 const createCell = () => ({ text: '', room: 1, span: 1, hidden: false });
 const clampRoom = (value) => Math.min(Math.max(Number(value) || 1, 1), 80);
@@ -20,6 +24,7 @@ const normalizeCell = (cell) => typeof cell === 'object' && cell !== null ? {
 const cloneCell = (cell) => ({ ...normalizeCell(cell), hidden: false });
 
 const dotTextStyle = { color: 'rgba(63, 64, 80, 0.28)', fontSize: '22px', fontWeight: 900, lineHeight: 1.35, letterSpacing: '1px', whiteSpace: 'pre-wrap', overflow: 'hidden' };
+const holidayTextStyle = { color: '#9a3412', fontSize: '21px', fontWeight: 900, lineHeight: 1.25, letterSpacing: '0.2px', textAlign: 'center', justifyContent: 'center', background: 'linear-gradient(90deg, rgba(254,215,170,0.38), rgba(254,243,199,0.62))', borderRadius: '12px', margin: '8px 18px', padding: '10px 16px', overflow: 'hidden' };
 const subjectTextStyle = { display: 'flex', flexDirection: 'column', alignItems: 'stretch', justifyContent: 'center', gap: '6px', padding: '8px 10px', textAlign: 'center', overflow: 'hidden' };
 const sessionLineStyle = { display: 'grid', gridTemplateColumns: '52px 1fr', alignItems: 'center', gap: '6px', minHeight: '24px', padding: '4px 7px', border: '1px solid rgba(63, 64, 80, 0.18)', borderRadius: '8px', background: 'rgba(63, 64, 80, 0.045)', color: '#343545', fontFamily: 'Arial, sans-serif', lineHeight: 1, overflow: 'hidden' };
 const sessionHourStyle = { display: 'inline-flex', alignItems: 'center', justifyContent: 'center', height: '18px', borderRadius: '6px', background: 'var(--homework-color)', color: 'white', fontSize: '12px', fontWeight: 900, whiteSpace: 'nowrap' };
@@ -150,7 +155,9 @@ export default function Tab() {
       const sessions = (sessionsByDay[dayIndex] ?? []).filter((session) => classSet.has(session.className));
       if (!sessions.length) return null;
       const dayNumber = String(index + 1).padStart(2, '0');
-      return { date: `${String(rows[dayIndex]?.day || DAYS[dayIndex]).toUpperCase()} ${dayNumber}/09`, sessions, text: DOT_TEXT, color: HOMEWORK_COLORS[dayIndex % HOMEWORK_COLORS.length] };
+      const monthDate = `${dayNumber}/09`;
+      const holidayText = HOLIDAY_TEXT_BY_DATE[monthDate];
+      return { date: `${String(rows[dayIndex]?.day || DAYS[dayIndex]).toUpperCase()} ${monthDate}`, sessions, text: holidayText || DOT_TEXT, isHoliday: Boolean(holidayText), color: HOMEWORK_COLORS[dayIndex % HOMEWORK_COLORS.length] };
     }).filter(Boolean);
 
     return { title: GROUP_TITLES[groupIndex], color: GROUP_COLORS[groupIndex], pages: chunkEntries(entries, 5) };
@@ -296,7 +303,7 @@ export default function Tab() {
         <div style={groupHomeworkHeaderStyle}>{group.title} - Mois 09</div>
         {pageEntries.map((entry) => <section className="homework-entry" key={`${group.title}-${entry.date}`} style={{ '--homework-color': entry.color }}>
           <div className="homework-date" contentEditable suppressContentEditableWarning onKeyDown={validateOnEnter}>{entry.date}</div>
-          <div className="homework-content"><div className="homework-subject" contentEditable={entry.sessions.length === 0} suppressContentEditableWarning onKeyDown={validateOnEnter} style={entry.sessions.length ? subjectTextStyle : undefined}>{entry.sessions.map((session) => <div key={`${group.title}-${entry.date}-${session.hour}-${session.className}`} style={sessionLineStyle}><span style={sessionHourStyle}>{session.hour}</span><span style={sessionClassStyle}>{session.className}</span></div>)}</div><div className="homework-text" contentEditable suppressContentEditableWarning onKeyDown={validateOnEnter} style={dotTextStyle}>{entry.text}</div></div>
+          <div className="homework-content"><div className="homework-subject" contentEditable={entry.sessions.length === 0} suppressContentEditableWarning onKeyDown={validateOnEnter} style={entry.sessions.length ? subjectTextStyle : undefined}>{entry.sessions.map((session) => <div key={`${group.title}-${entry.date}-${session.hour}-${session.className}`} style={sessionLineStyle}><span style={sessionHourStyle}>{session.hour}</span><span style={sessionClassStyle}>{session.className}</span></div>)}</div><div className="homework-text" contentEditable suppressContentEditableWarning onKeyDown={validateOnEnter} style={entry.isHoliday ? holidayTextStyle : dotTextStyle}>{entry.text}</div></div>
         </section>)}
       </div>))}
     </section>
