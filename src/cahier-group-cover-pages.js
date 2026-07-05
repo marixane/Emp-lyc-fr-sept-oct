@@ -107,6 +107,47 @@ const applyThemeToBlockPages = (pages, color) => {
   });
 };
 
+const normalizeSessionText = (text) => String(text || '').trim().toLowerCase().replace(/\s+/g, '');
+
+const getTimetableDurationMap = () => {
+  const map = new Map();
+  const table = document.querySelector('.timetable-table');
+  if (!table) return map;
+
+  Array.from(table.querySelectorAll('tbody tr')).forEach((row) => {
+    const day = normalizeSessionText(row.querySelector('.day-cell textarea')?.value || row.querySelector('.day-cell')?.textContent || '');
+    Array.from(row.querySelectorAll('td[colspan]')).forEach((cell) => {
+      const textarea = cell.querySelector('textarea');
+      const className = normalizeSessionText(textarea?.value || textarea?.textContent || '');
+      if (!day || !className) return;
+      const duration = Math.max(Number(cell.getAttribute('colspan')) || 1, 1);
+      const key = `${day}|${className}`;
+      map.set(key, Math.max(map.get(key) || 1, duration));
+    });
+  });
+
+  return map;
+};
+
+const applySessionDurationBadges = () => {
+  const durationMap = getTimetableDurationMap();
+
+  document.querySelectorAll('.homework-entry:not(.cahier-exam-entry):not(.cahier-extra-holiday-entry)').forEach((entry) => {
+    const dayText = normalizeSessionText(String(entry.querySelector('.homework-date')?.textContent || '').split(/\s+/)[0]);
+    entry.querySelectorAll('.homework-subject > div').forEach((sessionRow) => {
+      const spans = sessionRow.querySelectorAll('span');
+      if (spans.length < 2) return;
+      sessionRow.querySelector('.cahier-session-duration')?.remove();
+      const className = normalizeSessionText(spans[1]?.textContent || '');
+      const duration = durationMap.get(`${dayText}|${className}`) || 1;
+      const badge = document.createElement('span');
+      badge.className = 'cahier-session-duration';
+      badge.textContent = `${duration}h`;
+      sessionRow.append(badge);
+    });
+  });
+};
+
 const applyGroupCoverPages = () => {
   if (!document.body.classList.contains('cahier-tab-active')) return;
   document.querySelectorAll('.cahier-group-cover-page').forEach((page) => page.remove());
@@ -123,6 +164,8 @@ const applyGroupCoverPages = () => {
     const cover = buildGroupCoverPage(block.title, index, group.classes, color);
     block.pages[0].before(cover);
   });
+
+  applySessionDurationBadges();
 };
 
 let groupCoverPagesRaf = 0;
