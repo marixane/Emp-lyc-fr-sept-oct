@@ -13,6 +13,17 @@ const setButtonStatus = (button, text) => {
   button.setAttribute('aria-label', text);
 };
 
+const getCurrentCssText = () => Array.from(document.styleSheets)
+  .map((sheet) => {
+    try {
+      return Array.from(sheet.cssRules || []).map((rule) => rule.cssText).join('\n');
+    } catch {
+      return '';
+    }
+  })
+  .filter(Boolean)
+  .join('\n');
+
 const cloneA4PagesHtml = () => {
   const zone = document.querySelector('.cahier-preview-zone');
   if (!zone) return '';
@@ -23,7 +34,7 @@ const cloneA4PagesHtml = () => {
     textarea.setAttribute('value', textarea.value);
   });
   clone.querySelectorAll('input').forEach((input) => input.setAttribute('value', input.value));
-  return clone.innerHTML;
+  return clone.outerHTML;
 };
 
 const downloadBlob = (blob) => {
@@ -48,13 +59,14 @@ const downloadCahierPdf = async (button) => {
     await wait(250);
 
     const html = cloneA4PagesHtml();
+    const css = getCurrentCssText();
     if (!html) throw new Error('Pages A4 introuvables');
 
     setButtonStatus(button, 'Génération PDF...');
     const response = await fetch('/api/cahier-pdf', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ html, baseUrl: window.location.origin })
+      body: JSON.stringify({ html, css, baseUrl: window.location.origin })
     });
 
     if (!response.ok) {
