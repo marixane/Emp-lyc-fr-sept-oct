@@ -9,7 +9,7 @@ const GROUP_COLORS = ['#e0f2fe', '#dcfce7', '#fef3c7', '#fce7f3', '#ede9fe'];
 const GROUP_TITLES = ['Tronc Commun', '1ères Bac', '2ème Bac', 'Autres', 'Autres'];
 const DOT_TEXT = Array.from({ length: 4 }, () => '.'.repeat(74)).join('\n');
 const HOLIDAY_RANGES = [
-  { start: '05/09', end: '06/09', text: 'Vacance : Aïd Al Mawlid Annabaoui du 05/09 au 06/09' }
+  { start: '05/09', end: '06/09', text: 'Vacance : Aïd Al Mawlid Annabaoui' }
 ];
 
 const createCell = () => ({ text: '', room: 1, span: 1, hidden: false });
@@ -72,7 +72,12 @@ const getGroupIndex = (className) => {
   const level = getClassLevel(className);
   return level === 'Tronc Commun' ? 0 : level === '1ères Bac' ? 1 : level === '2ème Bac' ? 2 : 3;
 };
+const getDayFromMonthDate = (monthDate) => Number(String(monthDate).split('/')[0]);
 const getHolidayRangeStart = (monthDate) => HOLIDAY_RANGES.find((holiday) => holiday.start === monthDate);
+const isInsideHolidayRangeAfterStart = (monthDate) => HOLIDAY_RANGES.some((holiday) => {
+  const day = getDayFromMonthDate(monthDate);
+  return day > getDayFromMonthDate(holiday.start) && day <= getDayFromMonthDate(holiday.end);
+});
 
 export default function Tab() {
   const [school, setSchool] = useState('Établissement :');
@@ -152,12 +157,30 @@ export default function Tab() {
       const date = new Date(getSchoolStartYear(), 8, index + 1);
       const dayIndex = getMondayBasedDayIndex(date);
       if (dayIndex >= rows.length || !classSet.size) return null;
-      const sessions = (sessionsByDay[dayIndex] ?? []).filter((session) => classSet.has(session.className));
-      if (!sessions.length) return null;
       const dayNumber = String(index + 1).padStart(2, '0');
       const monthDate = `${dayNumber}/09`;
+      if (isInsideHolidayRangeAfterStart(monthDate)) return null;
       const holidayRange = getHolidayRangeStart(monthDate);
-      return { date: `${String(rows[dayIndex]?.day || DAYS[dayIndex]).toUpperCase()} ${monthDate}`, sessions, text: holidayRange?.text || DOT_TEXT, isHoliday: Boolean(holidayRange), color: HOMEWORK_COLORS[dayIndex % HOMEWORK_COLORS.length] };
+
+      if (holidayRange) {
+        const rangeSessions = [];
+        for (let day = getDayFromMonthDate(holidayRange.start); day <= getDayFromMonthDate(holidayRange.end); day += 1) {
+          const holidayDate = new Date(getSchoolStartYear(), 8, day);
+          const holidayDayIndex = getMondayBasedDayIndex(holidayDate);
+          (sessionsByDay[holidayDayIndex] ?? []).forEach((session) => {
+            if (classSet.has(session.className)) rangeSessions.push(session);
+          });
+        }
+        if (!rangeSessions.length) return null;
+        const endDay = getDayFromMonthDate(holidayRange.end);
+        const endDate = new Date(getSchoolStartYear(), 8, endDay);
+        const endDayIndex = getMondayBasedDayIndex(endDate);
+        return { date: `${String(rows[dayIndex]?.day || DAYS[dayIndex]).toUpperCase()} ${holidayRange.start} - ${String(rows[endDayIndex]?.day || DAYS[endDayIndex]).toUpperCase()} ${holidayRange.end}`, sessions: rangeSessions, text: holidayRange.text, isHoliday: true, color: HOMEWORK_COLORS[dayIndex % HOMEWORK_COLORS.length] };
+      }
+
+      const sessions = (sessionsByDay[dayIndex] ?? []).filter((session) => classSet.has(session.className));
+      if (!sessions.length) return null;
+      return { date: `${String(rows[dayIndex]?.day || DAYS[dayIndex]).toUpperCase()} ${monthDate}`, sessions, text: DOT_TEXT, isHoliday: false, color: HOMEWORK_COLORS[dayIndex % HOMEWORK_COLORS.length] };
     }).filter(Boolean);
 
     return { title: GROUP_TITLES[groupIndex], color: GROUP_COLORS[groupIndex], pages: chunkEntries(entries, 5) };
