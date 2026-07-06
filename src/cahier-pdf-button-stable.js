@@ -51,6 +51,27 @@ const prepareClone = (clone) => {
   clone.style.setProperty('overflow', 'hidden', 'important');
 };
 
+const firstDateInfo = (text) => {
+  const match = String(text || '').match(/(\d{2})\/(\d{2})/);
+  return match ? { day: Number(match[1]), month: Number(match[2]) } : null;
+};
+
+const isAfterJuly10 = (text) => {
+  const date = firstDateInfo(text);
+  return date?.month === 7 && date.day > 10;
+};
+
+const removeAfterJuly10 = (zone) => {
+  zone.querySelectorAll('.homework-entry').forEach((entry) => {
+    const dateText = entry.querySelector('.homework-date')?.textContent || entry.textContent;
+    if (isAfterJuly10(dateText)) entry.remove();
+  });
+
+  zone.querySelectorAll('.homework-page').forEach((page) => {
+    if (!page.querySelector('.homework-entry')) page.remove();
+  });
+};
+
 const getGroupKey = (page) => {
   const color = page.style.getPropertyValue('--group-color').trim();
   const title = page.firstElementChild?.textContent?.trim() || '';
@@ -123,6 +144,7 @@ const buildExportHtml = () => {
     zone.append(clone);
   });
 
+  removeAfterJuly10(zone);
   appendExitPageForEachGroup(zone);
 
   return `<style>${getCss()}\n${EXPORT_CSS}</style>${zone.outerHTML}`;
