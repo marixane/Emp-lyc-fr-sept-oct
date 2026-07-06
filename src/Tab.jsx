@@ -6,8 +6,8 @@ const CALENDAR_DAYS = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendr
 const HOURS = ['08:00 - 09:00', '09:00 - 10:00', '10:00 - 11:00', '11:00 - 12:00', '12:00 - 13:00', '13:00 - 14:00', '14:00 - 15:00', '15:00 - 16:00', '16:00 - 17:00', '17:00 - 18:00'];
 const CELL_COLORS = ['#fff3bf', '#d8f3dc', '#dbeafe', '#ffe4e6', '#ede9fe', '#cffafe', '#fef3c7', '#dcfce7', '#e0e7ff', '#fce7f3', '#ccfbf1', '#f5f5f4', '#fbcfe8', '#bfdbfe', '#bbf7d0', '#fed7aa', '#ddd6fe', '#bae6fd', '#fecdd3', '#ccfbf1'];
 const HOMEWORK_COLORS = ['#66c43f', '#b34bd7', '#2f80ed', '#ff3f5f', '#f2994a'];
-const GROUP_COLORS = ['#e0f2fe', '#dcfce7', '#fef3c7', '#fce7f3', '#ede9fe'];
-const GROUP_TITLES = ['Tronc Commun', '1ères Bac', '2ème Bac', 'Autres', 'Autres'];
+const GROUP_COLORS = ['#e0f2fe', '#dcfce7', '#fef3c7'];
+const GROUP_TITLES = ['Tronc Commun', '1ères Bac', '2ème Bac'];
 const DOT_TEXT = Array.from({ length: 3 }, () => '.'.repeat(74)).join('\n');
 const MANDATORY_EVENTS = [
   { start: '05/09', end: '06/09', label: 'Religieuse', text: 'Vacance religieuse : Aïd Al Mawlid Annabaoui', type: 'holiday' },
@@ -31,7 +31,8 @@ const MANDATORY_EVENTS = [
   { start: '16/06', end: '17/06', label: 'Collège', text: 'Examen : Examen régional', type: 'exam' },
   { start: '23/06', end: '24/06', label: 'Primaire', text: 'Examen : Examen normalisé provincial', type: 'exam' },
   { start: '03/07', end: '04/07', label: 'Lycée', text: 'Rattrapage : 1ère Bac', type: 'exam' },
-  { start: '06/07', end: '09/07', label: 'Lycée', text: 'Rattrapage : 2ème Bac', type: 'exam' }
+  { start: '06/07', end: '09/07', label: 'Lycée', text: 'Rattrapage : 2ème Bac', type: 'exam' },
+  { start: '10/07', end: '10/07', label: 'Lycée', text: 'Signature du Procès-verbal de sortie', type: 'exam' }
 ];
 const EXAM_EVENTS = MANDATORY_EVENTS.filter((event) => event.type === 'exam');
 const SCHOOL_PROGRESS_FLAGS = [
@@ -58,7 +59,7 @@ const subjectTextStyle = { display: 'flex', flexDirection: 'column', alignItems:
 const sessionLineStyle = { display: 'grid', gridTemplateColumns: '52px 1fr', alignItems: 'center', gap: '6px', minHeight: '24px', padding: '4px 7px', border: '1px solid rgba(63, 64, 80, 0.18)', borderRadius: '8px', background: 'rgba(63, 64, 80, 0.045)', color: '#343545', fontFamily: 'Arial, sans-serif', lineHeight: 1, overflow: 'hidden' };
 const sessionHourStyle = { display: 'inline-flex', alignItems: 'center', justifyContent: 'center', minWidth: '72px', height: '22px', borderRadius: '999px', background: 'var(--homework-color)', color: 'white', fontSize: '12px', fontWeight: 900, whiteSpace: 'nowrap' };
 const sessionClassStyle = { display: 'block', minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontSize: '14px', fontWeight: 900, textTransform: 'uppercase' };
-const levelGroupsStyle = { display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '10px', marginTop: '10px' };
+const levelGroupsStyle = { display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px', marginTop: '10px' };
 const levelGroupTitleStyle = { marginBottom: '8px', color: '#111827', fontSize: '12px', fontWeight: 900, textAlign: 'center', textTransform: 'uppercase', letterSpacing: '0.3px' };
 const levelGroupClassesStyle = { display: 'flex', flexDirection: 'column', alignItems: 'stretch', justifyContent: 'flex-start', gap: '7px', minHeight: '130px', color: 'rgba(17, 17, 17, 0.45)', fontSize: '10px', fontWeight: 800, lineHeight: 1.1, textAlign: 'center' };
 const levelChipStyle = { display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '100%', minHeight: '28px', padding: '7px 9px', borderRadius: '9px', border: '1px solid rgba(17, 17, 17, 0.22)', color: '#111827', fontSize: '12px', fontWeight: 900, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', cursor: 'grab', boxShadow: '0 1px 3px rgba(17, 17, 17, 0.12)' };
@@ -145,14 +146,13 @@ const chunkEntries = (entries, size) => entries.reduce((pages, entry, index) => 
 }, []);
 const getClassLevel = (className) => {
   const normalized = String(className ?? '').toUpperCase().replace(/[\s-]/g, '');
-  if (normalized.startsWith('TC') || normalized.includes('TRONCCOMMUN')) return 'Tronc Commun';
   if (normalized.startsWith('1BAC') || normalized.startsWith('1ERE') || normalized.startsWith('1ÈRE')) return '1ères Bac';
   if (normalized.startsWith('2BAC') || normalized.startsWith('2EME') || normalized.startsWith('2ÈME')) return '2ème Bac';
-  return 'Autres';
+  return 'Tronc Commun';
 };
 const getGroupIndex = (className) => {
   const level = getClassLevel(className);
-  return level === 'Tronc Commun' ? 0 : level === '1ères Bac' ? 1 : level === '2ème Bac' ? 2 : 3;
+  return level === '1ères Bac' ? 1 : level === '2ème Bac' ? 2 : 0;
 };
 const getMandatoryEventStart = (monthDate) => MANDATORY_EVENTS.filter((event) => event.start === monthDate);
 const isInsideMandatoryEventAfterStart = (monthDate) => MANDATORY_EVENTS.some((event) => {
