@@ -1,6 +1,7 @@
 const PDF_BUTTON_ID = 'cahier-pdf-button-stable';
 const A4_WIDTH = '210mm';
 const A4_HEIGHT = '297mm';
+const EXIT_TEXT = 'La signature de procès-verbal de sortie';
 
 const EXPORT_CSS = `
   @page { size: ${A4_WIDTH} ${A4_HEIGHT}; margin: 0; }
@@ -50,6 +51,36 @@ const prepareClone = (clone) => {
   clone.style.setProperty('overflow', 'hidden', 'important');
 };
 
+const getLastHomeworkHeader = (zone) => {
+  const homeworkPages = Array.from(zone.querySelectorAll('.homework-page'));
+  const lastHomeworkPage = homeworkPages[homeworkPages.length - 1];
+  return lastHomeworkPage?.firstElementChild?.cloneNode(true) || null;
+};
+
+const appendExitPageIfMissing = (zone) => {
+  if (String(zone.textContent || '').includes(EXIT_TEXT)) return;
+
+  const page = document.createElement('div');
+  page.className = 'a4-page cahier-page homework-page cahier-pdf-exit-page';
+  page.style.cssText = 'position:relative;padding-top:60px;--group-color:#fef3c7;';
+
+  const header = getLastHomeworkHeader(zone);
+  if (header) page.append(header);
+  else {
+    const h = document.createElement('div');
+    h.style.cssText = 'position:absolute;top:10px;left:50px;right:18px;height:42px;display:grid;grid-template-columns:230px 1fr;align-items:center;gap:18px;border-radius:12px;background:#fef3c7;color:#111827;padding:0 18px;box-shadow:0 2px 6px rgba(17,17,17,.12);font:900 20px Arial,sans-serif;text-transform:uppercase;';
+    h.textContent = 'Administration';
+    page.append(h);
+  }
+
+  const section = document.createElement('section');
+  section.className = 'homework-entry cahier-extra-holiday-entry';
+  section.style.setProperty('--homework-color', '#f97316');
+  section.innerHTML = '<div class="homework-date">VENDREDI 10/07</div><div class="homework-content"><div class="homework-subject"><div><span>Administration</span></div></div><div class="homework-text" style="color:#9a3412;font-size:21px;font-weight:900;text-align:center;background:linear-gradient(90deg,rgba(254,215,170,.38),rgba(254,243,199,.62));border-radius:12px;margin:8px 18px;padding:10px 16px">' + EXIT_TEXT + '</div></div>';
+  page.append(section);
+  zone.append(page);
+};
+
 const buildExportHtml = () => {
   const pages = Array.from(document.querySelectorAll('.cahier-preview-zone .a4-page, .cahier-preview-zone .cahier-page')).filter((page) => {
     const rect = page.getBoundingClientRect();
@@ -71,6 +102,8 @@ const buildExportHtml = () => {
     prepareClone(clone);
     zone.append(clone);
   });
+
+  appendExitPageIfMissing(zone);
 
   return `<style>${getCss()}\n${EXPORT_CSS}</style>${zone.outerHTML}`;
 };
