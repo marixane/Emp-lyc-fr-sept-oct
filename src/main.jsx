@@ -100,6 +100,7 @@ import './cahier-auto-fit-many-classes.css';
 import './cahier-main-cover-page.css';
 import './cahier-main-cover-page.js';
 import './cahier-lycee-events-inline.js';
+import './cahier-single-autres-group.css';
 // Désactivé : ce guard DOM peut bloquer Safari pendant la saisie.
 // import './cahier-hide-holiday-session-duplicates.js';
 
