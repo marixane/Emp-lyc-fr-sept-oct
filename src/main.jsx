@@ -102,10 +102,11 @@ import './cahier-group-box-polish.css';
 import './cahier-empty-autres-groups.js';
 import './cahier-exam-events.css';
 import './cahier-exam-events.js';
-import './cahier-hide-empty-group-pages.js';
+// Désactivés temporairement : ces scripts modifient le DOM après React et bloquaient dès la 2e classe.
+// import './cahier-hide-empty-group-pages.js';
 import './cahier-fixed-five-entries.css';
 import './cahier-group-cover-pages.css';
-import './cahier-group-cover-pages.js';
-import './cahier-july-complete.js';
+// import './cahier-group-cover-pages.js';
+// import './cahier-july-complete.js';
 
 createRoot(document.getElementById('root')).render(<React.StrictMode><App /></React.StrictMode>);
