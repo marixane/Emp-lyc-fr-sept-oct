@@ -38,6 +38,14 @@ const LYCEE_INLINE_EVENTS = [
     date: 'VENDREDI 28/05 - SAMEDI 29/05',
     label: 'Lycée',
     text: 'Fin de saisie des notes des derniers devoirs de contrôle continu'
+  },
+  {
+    key: 'lycee-2027-07-10',
+    sort: 20270710,
+    color: '#38bdf8',
+    date: 'SAMEDI 10/07',
+    label: 'Lycée',
+    text: 'Signature du Procès-verbal de sortie'
   }
 ];
 
