@@ -103,6 +103,73 @@ const fixGroupCoverTitles = () => {
   });
 };
 
+const makeExitReportEntry = () => {
+  const entry = document.createElement('section');
+  entry.className = 'homework-entry cahier-extra-holiday-entry';
+  entry.dataset.cahierExitReport = 'true';
+  entry.style.setProperty('--homework-color', '#f97316');
+
+  const dateNode = document.createElement('div');
+  dateNode.className = 'homework-date';
+  dateNode.textContent = 'SAMEDI 10/07';
+
+  const content = document.createElement('div');
+  content.className = 'homework-content';
+
+  const subjectNode = document.createElement('div');
+  subjectNode.className = 'homework-subject';
+  subjectNode.textContent = 'Administration';
+
+  const textNode = document.createElement('div');
+  textNode.className = 'homework-text';
+  textNode.textContent = 'Le procès-verbal de sortie';
+  textNode.style.color = '#9a3412';
+  textNode.style.fontSize = '20px';
+  textNode.style.fontWeight = '900';
+  textNode.style.textAlign = 'center';
+  textNode.style.justifyContent = 'center';
+
+  content.append(subjectNode, textNode);
+  entry.append(dateNode, content);
+  return entry;
+};
+
+const cloneExitReportPage = (source) => {
+  const page = document.createElement('div');
+  page.className = source.className;
+  page.classList.add('cahier-visible-group-page', 'cahier-themed-group-page');
+  page.dataset.cahierExitReportPage = 'true';
+  page.style.cssText = source.style.cssText;
+  page.style.display = 'block';
+  const header = source.firstElementChild?.cloneNode(true);
+  if (header) {
+    setHeaderProgress(header, 100);
+    page.append(header);
+  }
+  return page;
+};
+
+const ensureExitReportLine = () => {
+  document.querySelectorAll('[data-cahier-exit-report="true"], [data-cahier-exit-report-page="true"]').forEach((node) => node.remove());
+
+  const groups = getFilledGroupsFromBoxes();
+  groups.forEach((_, title) => {
+    const pages = Array.from(document.querySelectorAll('.homework-page'))
+      .filter((page) => page.dataset.cahierExitReportPage !== 'true')
+      .filter((page) => getCahierPageTitle(page) === title)
+      .filter((page) => !page.classList.contains('cahier-page-hidden-after-limit'));
+    const lastPage = pages[pages.length - 1];
+    if (!lastPage) return;
+
+    let targetPage = lastPage;
+    if (targetPage.querySelectorAll('.homework-entry:not(.cahier-entry-hidden-after-limit)').length >= 5) {
+      targetPage = cloneExitReportPage(lastPage);
+      lastPage.after(targetPage);
+    }
+    targetPage.append(makeExitReportEntry());
+  });
+};
+
 const applyCahierEndLimit = () => {
   document.querySelectorAll('.homework-entry').forEach((entry) => {
     const date = getCahierEntryDate(entry);
@@ -118,6 +185,7 @@ const applyCahierEndLimit = () => {
     page.classList.toggle('cahier-page-hidden-after-limit', visibleEntries.length === 0);
   });
 
+  ensureExitReportLine();
   fixCahierProgressBars();
 };
 
