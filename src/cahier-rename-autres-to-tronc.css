@@ -1,12 +1,22 @@
 .cahier-page > div[style*="repeat(5, 1fr)"] > div:nth-child(4) > div:first-child {
+  color: transparent !important;
   font-size: 0 !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+}
+
+.cahier-page > div[style*="repeat(5, 1fr)"] > div:nth-child(4) > div:first-child::before {
+  content: 'TRONC COMMUN' !important;
+  display: block !important;
+  color: #111827 !important;
+  font-size: 12px !important;
+  font-weight: 900 !important;
+  text-align: center !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.3px !important;
 }
 
 .cahier-page > div[style*="repeat(5, 1fr)"] > div:nth-child(4) > div:first-child::after {
-  content: 'TRONC COMMUN' !important;
-  font-size: 12px !important;
-  font-weight: 900 !important;
-  color: #111827 !important;
-  text-transform: uppercase !important;
-  letter-spacing: 0.3px !important;
+  content: '' !important;
 }
