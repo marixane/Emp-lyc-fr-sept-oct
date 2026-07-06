@@ -99,7 +99,8 @@ import './cahier-table-exams-polish.css';
 import './cahier-auto-fit-many-classes.css';
 import './cahier-main-cover-page.css';
 import './cahier-main-cover-page.js';
-import './cahier-lycee-events-inline.js';
+// Désactivé : ce helper réordonne les pages à chaque saisie et peut bloquer Safari.
+// import './cahier-lycee-events-inline.js';
 import './cahier-single-autres-group.css';
 // Désactivé : ce guard DOM peut bloquer Safari pendant la saisie.
 // import './cahier-hide-holiday-session-duplicates.js';
