@@ -82,7 +82,14 @@ const applySessionDurations = () => {
   markNonHourLabels();
 };
 
-const scheduleSessionDurations = () => window.setTimeout(applySessionDurations, 80);
+let sessionFrame = 0;
+const scheduleSessionDurations = () => {
+  cancelAnimationFrame(sessionFrame);
+  sessionFrame = requestAnimationFrame(() => {
+    applySessionDurations();
+    setTimeout(applySessionDurations, 60);
+  });
+};
 
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', scheduleSessionDurations, { once: true });
@@ -90,6 +97,7 @@ if (document.readyState === 'loading') {
   scheduleSessionDurations();
 }
 
+document.addEventListener('input', scheduleSessionDurations, true);
 document.addEventListener('focusout', scheduleSessionDurations, true);
 document.addEventListener('drop', scheduleSessionDurations, true);
 document.addEventListener('click', (event) => {
