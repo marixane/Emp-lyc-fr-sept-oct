@@ -1,23 +1,32 @@
 .homework-subject > div,
 .homework-subject:has(> div:nth-child(3)) > div,
-.homework-subject:has(> div:nth-child(4)) > div {
+.homework-subject:has(> div:nth-child(4)) > div,
+.cahier-preview-zone .homework-subject > div {
   grid-template-columns: var(--cahier-hour-width, 66px) minmax(0, 1fr) 16px !important;
 }
 
-.homework-subject:has(> div:nth-child(3)) > div {
+.homework-subject:has(> div:nth-child(3)) > div,
+.cahier-preview-zone .homework-subject:has(> div:nth-child(3)) > div {
   --cahier-hour-width: 60px;
 }
 
-.homework-subject:has(> div:nth-child(4)) > div {
+.homework-subject:has(> div:nth-child(4)) > div,
+.cahier-preview-zone .homework-subject:has(> div:nth-child(4)) > div {
   --cahier-hour-width: 52px;
 }
 
-.homework-subject > div > span:nth-child(2) {
+.homework-subject > div > span:nth-child(2),
+.cahier-preview-zone .homework-subject > div > span:nth-child(2) {
   width: calc(100% + 10px) !important;
   max-width: calc(100% + 10px) !important;
+  min-width: 0 !important;
+  overflow: hidden !important;
+  text-overflow: clip !important;
+  white-space: nowrap !important;
 }
 
-.cahier-session-duration {
+.cahier-session-duration,
+.cahier-preview-zone .cahier-session-duration {
   left: 3px !important;
   width: 16px !important;
   justify-self: end !important;
