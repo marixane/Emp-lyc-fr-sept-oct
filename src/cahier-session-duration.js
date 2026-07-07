@@ -1,6 +1,7 @@
 const durationText = (span) => `${Math.max(Number(span) || 1, 1)}h`;
 
 const clean = (value) => String(value || '').trim().toUpperCase().replace(/\s+/g, ' ');
+const isHourText = (value) => /^\d{1,2}:\d{2}$/.test(String(value || '').trim());
 
 const getTimetableDurations = () => {
   const rows = Array.from(document.querySelectorAll('.timetable-table tbody tr'));
@@ -30,6 +31,12 @@ const getTimetableDurations = () => {
 
 const getEntryDay = (entry) => clean((entry.querySelector('.homework-date')?.textContent || '').split(' ')[0]);
 
+const markNonHourLabels = () => {
+  document.querySelectorAll('.homework-subject > div > span:first-child').forEach((node) => {
+    node.classList.toggle('cahier-session-non-hour', !isHourText(node.textContent));
+  });
+};
+
 const applySessionDurations = () => {
   if (!document.body.classList.contains('cahier-tab-active')) return;
 
@@ -52,6 +59,8 @@ const applySessionDurations = () => {
       durationNode.textContent = duration;
     });
   });
+
+  markNonHourLabels();
 };
 
 const scheduleSessionDurations = () => window.setTimeout(applySessionDurations, 80);
@@ -65,5 +74,5 @@ if (document.readyState === 'loading') {
 document.addEventListener('focusout', scheduleSessionDurations, true);
 document.addEventListener('drop', scheduleSessionDurations, true);
 document.addEventListener('click', (event) => {
-  if (event.target?.closest?.('.span-tools, .timetable-table')) scheduleSessionDurations();
+  if (event.target?.closest?.('.span-tools, .timetable-table, .cahier-preview-zone')) scheduleSessionDurations();
 }, true);
