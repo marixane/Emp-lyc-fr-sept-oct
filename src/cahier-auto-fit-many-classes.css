@@ -59,7 +59,7 @@
   gap: 2px !important;
 }
 
-/* 1 à 2 classes : texte très grand */
+/* 1 à 2 classes */
 .homework-page .homework-subject > div {
   max-height: 38px !important;
   min-height: 0 !important;
@@ -71,15 +71,15 @@
 .homework-page .homework-subject > div > span:first-child {
   min-width: 66px !important;
   height: 26px !important;
-  font-size: 35px !important;
+  font-size: 20px !important;
 }
 
 .homework-page .homework-subject > div > span:nth-child(2) {
-  font-size: 35px !important;
+  font-size: 20px !important;
 }
 
 .homework-page .cahier-session-duration {
-  font-size: 25px !important;
+  font-size: 15px !important;
 }
 
 /* 3 classes : taille intermédiaire */
