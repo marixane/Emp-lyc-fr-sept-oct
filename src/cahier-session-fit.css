@@ -10,12 +10,12 @@
 
 /* Cadre blanc plus large, pastille heure plus petite */
 .homework-subject > div {
-  grid-template-columns: 66px 1fr 36px !important;
+  grid-template-columns: 66px 1fr 30px !important;
   flex: 1 1 0 !important;
   min-height: 0 !important;
   max-height: 38px !important;
   padding: 4px 8px !important;
-  gap: 6px !important;
+  gap: 4px !important;
   line-height: 1 !important;
 }
 
@@ -29,11 +29,11 @@
 }
 
 .homework-subject > div > span:nth-child(2) {
-  font-size: 16px !important;
+  font-size: 17px !important;
   font-weight: 900 !important;
   line-height: 1 !important;
   overflow: hidden !important;
-  text-overflow: ellipsis !important;
+  text-overflow: clip !important;
   white-space: nowrap !important;
 }
 
@@ -47,10 +47,10 @@
 
 /* 3 classes : taille intermédiaire */
 .homework-subject:has(> div:nth-child(3)) > div {
-  grid-template-columns: 60px 1fr 32px !important;
+  grid-template-columns: 60px 1fr 28px !important;
   max-height: 33px !important;
   padding: 3px 7px !important;
-  gap: 5px !important;
+  gap: 4px !important;
 }
 
 .homework-subject:has(> div:nth-child(3)) > div > span:first-child {
@@ -60,7 +60,7 @@
 }
 
 .homework-subject:has(> div:nth-child(3)) > div > span:nth-child(2) {
-  font-size: 15px !important;
+  font-size: 16px !important;
 }
 
 .homework-subject:has(> div:nth-child(3)) .cahier-session-duration {
@@ -74,10 +74,10 @@
 }
 
 .homework-subject:has(> div:nth-child(4)) > div {
-  grid-template-columns: 52px 1fr 28px !important;
+  grid-template-columns: 52px 1fr 24px !important;
   max-height: 28px !important;
   padding: 2px 6px !important;
-  gap: 4px !important;
+  gap: 3px !important;
 }
 
 .homework-subject:has(> div:nth-child(4)) > div > span:first-child {
@@ -87,7 +87,7 @@
 }
 
 .homework-subject:has(> div:nth-child(4)) > div > span:nth-child(2) {
-  font-size: 13px !important;
+  font-size: 14px !important;
 }
 
 .homework-subject:has(> div:nth-child(4)) .cahier-session-duration {
