@@ -1,0 +1,73 @@
+.emplois-page-tabs {
+  position: sticky;
+  top: 10px;
+  z-index: 2147483000;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  width: fit-content;
+  max-width: calc(100% - 24px);
+  margin: 12px auto 18px;
+  padding: 8px;
+  border: 1px solid rgba(17, 24, 39, 0.12);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 8px 24px rgba(17, 24, 39, 0.16);
+  backdrop-filter: blur(10px);
+}
+
+.emplois-page-tabs button {
+  border: 0;
+  border-radius: 999px;
+  padding: 11px 18px;
+  background: transparent;
+  color: #374151;
+  font-size: 14px;
+  font-weight: 900;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.emplois-page-tabs button:hover {
+  background: #f3f4f6;
+}
+
+.emplois-page-tabs button.active {
+  background: #111827;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(17, 24, 39, 0.24);
+}
+
+.emploi-page-panel {
+  display: none;
+}
+
+.emploi-page-panel.active {
+  display: block;
+}
+
+@media (max-width: 720px) {
+  .emplois-page-tabs {
+    justify-content: flex-start;
+    overflow-x: auto;
+  }
+
+  .emplois-page-tabs button {
+    padding: 10px 14px;
+    font-size: 12px;
+  }
+}
+
+@media print {
+  .emplois-page-tabs {
+    display: none !important;
+  }
+
+  .emploi-page-panel {
+    display: none !important;
+  }
+
+  .emploi-page-panel.active {
+    display: block !important;
+  }
+}
