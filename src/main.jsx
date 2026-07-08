@@ -107,7 +107,6 @@ import './cahier-single-autres-group.css';
 import './cahier-rename-cover-autres-safe.js';
 import './cahier-exams-groups-page.css';
 import './cahier-exams-groups-page.js';
-import './cahier-remove-after-july10-web.js';
 // Désactivé : ce guard DOM peut bloquer Safari pendant la saisie.
 // import './cahier-hide-holiday-session-duplicates.js';
 
