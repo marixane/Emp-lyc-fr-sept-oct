@@ -6,7 +6,13 @@ const isAfterJuly10 = (text) => {
 const updateJulyVisibility = () => {
   document.querySelectorAll('.homework-entry').forEach((entry) => {
     const dateText = entry.querySelector('.homework-date')?.textContent || '';
-    entry.hidden = isAfterJuly10(dateText);
+    if (isAfterJuly10(dateText)) {
+      entry.hidden = true;
+      entry.style.setProperty('display', 'none', 'important');
+    } else {
+      entry.hidden = false;
+      entry.style.removeProperty('display');
+    }
   });
 };
 
