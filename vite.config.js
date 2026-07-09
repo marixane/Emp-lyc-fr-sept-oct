@@ -8,7 +8,7 @@ const correctSchoolCalendar = () => ({
     if (!id.endsWith('/src/Tab.jsx') && !id.endsWith('/src/MoroccoHolidaysPage.jsx') && !id.endsWith('/src/main.jsx')) return null;
 
     const replacements = [
-      ["import './cahier-hide-after-july10-safe.js';", "// Barre calculée directement dans React : aucun observateur DOM dynamique."],
+      ["import './cahier-hide-after-july10-safe.js';", "import './cahier-event-badge-center.css';\n// Barre calculée directement dans React : aucun observateur DOM dynamique."],
       ["const getSchoolStartYear = () => {\n  const today = new Date();\n  return today.getMonth() >= 8 ? today.getFullYear() : today.getFullYear() - 1;\n};", "const getSchoolStartYear = () => 2026;"],
       ["return { start: new Date(startYear, 8, 1), end: new Date(startYear + 1, 6, 31) };", "return { start: new Date(startYear, 8, 1), end: new Date(startYear + 1, 6, 10) };"],
       ["const end = new Date(startYear + 1, 6, 31);", "const end = new Date(startYear + 1, 6, 10);"],
