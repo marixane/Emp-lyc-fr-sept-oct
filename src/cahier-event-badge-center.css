@@ -13,7 +13,6 @@
   align-items: stretch !important;
 }
 
-/* Le cadre blanc/gris garde sa taille normale. */
 .cahier-extra-holiday-entry .homework-subject,
 .cahier-exam-entry .homework-subject {
   display: flex !important;
@@ -25,6 +24,9 @@
   min-height: 0 !important;
   margin: 0 !important;
   padding: 0 30px !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
   font-size: 20px !important;
   font-weight: 900 !important;
   line-height: 1.1 !important;
@@ -39,7 +41,6 @@
   }
 }
 
-/* Taille d'origine du bouton coloré, avec le léger décalage demandé. */
 .cahier-extra-holiday-entry .homework-subject > div,
 .cahier-exam-entry .homework-subject > div {
   display: flex !important;
@@ -52,6 +53,10 @@
   min-height: 0 !important;
   margin: 0 auto !important;
   padding: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
   grid-template-columns: none !important;
   transform: translate(4px, 1px) !important;
 }
