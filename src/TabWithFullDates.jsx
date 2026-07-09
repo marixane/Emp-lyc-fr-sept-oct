@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect } from 'react';
+import { useLayoutEffect } from 'react';
 import Tab from './Tab.jsx';
 
 const SCHOOL_START_YEAR = 2026;
@@ -146,16 +146,6 @@ export default function TabWithFullDates() {
   useLayoutEffect(() => {
     updateDisplayedDates();
   });
-
-  useEffect(() => {
-    const observer = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => mutation.addedNodes.forEach((node) => {
-        if (node.nodeType === Node.ELEMENT_NODE) updateDisplayedDates(node);
-      }));
-    });
-    observer.observe(document.body, { childList: true, subtree: true });
-    return () => observer.disconnect();
-  }, []);
 
   return <>
     <style>{`
