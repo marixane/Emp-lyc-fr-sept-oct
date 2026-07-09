@@ -29,6 +29,7 @@ const EXPORT_CSS = `
   }
   .a4-page:last-child, .cahier-page:last-child { break-after: auto !important; page-break-after: auto !important; }
   #${PDF_BUTTON_ID}, .app-tabs, .no-print, button { display: none !important; }
+  .homework-date { font-size: 28px !important; }
   .homework-subject > div { grid-template-columns: 52px 1fr 34px !important; }
   .cahier-session-duration { display: inline-block !important; visibility: visible !important; opacity: 1 !important; color: rgba(55,65,81,.9) !important; font-size: 10px !important; font-weight: 900 !important; text-align: right !important; white-space: nowrap !important; }
 `;
