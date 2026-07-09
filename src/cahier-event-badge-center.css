@@ -29,6 +29,13 @@
 
 .cahier-extra-holiday-entry .homework-subject > div > span:first-child,
 .cahier-exam-entry .homework-subject > div > span:first-child {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-width: 112px !important;
+  padding: 9px 18px !important;
+  font-size: 15px !important;
+  line-height: 1.1 !important;
   margin-left: auto !important;
   margin-right: auto !important;
 }
