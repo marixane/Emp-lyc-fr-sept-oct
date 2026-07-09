@@ -1,5 +1,6 @@
-import { useEffect } from 'react';
+import { useEffect, useLayoutEffect } from 'react';
 import TabWithFullDates from './TabWithFullDates.jsx';
+import { scheduleFullDates } from './force-full-cahier-dates.js';
 
 export default function App() {
   useEffect(() => {
@@ -10,6 +11,8 @@ export default function App() {
       document.body.classList.remove('cahier-tab-active');
     };
   }, []);
+
+  useLayoutEffect(() => scheduleFullDates());
 
   return <TabWithFullDates />;
 }
