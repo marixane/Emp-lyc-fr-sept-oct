@@ -24,12 +24,23 @@ const applyFullDates = () => {
   });
 };
 
+const scheduleApply = () => {
+  requestAnimationFrame(applyFullDates);
+  window.setTimeout(applyFullDates, 50);
+  window.setTimeout(applyFullDates, 150);
+};
+
 export const scheduleFullDates = () => {
   applyFullDates();
-  const frame = requestAnimationFrame(applyFullDates);
-  const timer = window.setTimeout(applyFullDates, 80);
+  scheduleApply();
+
+  const events = ['click', 'input', 'change', 'keyup', 'drop'];
+  events.forEach((eventName) => document.addEventListener(eventName, scheduleApply, true));
+
+  const interval = window.setInterval(applyFullDates, 500);
+
   return () => {
-    cancelAnimationFrame(frame);
-    clearTimeout(timer);
+    events.forEach((eventName) => document.removeEventListener(eventName, scheduleApply, true));
+    window.clearInterval(interval);
   };
 };
