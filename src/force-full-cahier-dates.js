@@ -85,6 +85,21 @@ const restoreMawlidAsNormalSaturday = () => {
   target.classList.remove('cahier-extra-holiday-entry', 'cahier-exam-entry');
 };
 
+const removeNormalExitEntry = () => {
+  const entries = [...document.querySelectorAll('.homework-entry')];
+  const exitEventExists = entries.some((entry) => {
+    return entryDate(entry) === '10/07/2027' && /Procès-verbal de sortie/i.test(entryText(entry));
+  });
+
+  if (!exitEventExists) return;
+
+  entries.forEach((entry) => {
+    const isSameDate = entryDate(entry) === '10/07/2027';
+    const isExitEvent = /Procès-verbal de sortie/i.test(entryText(entry));
+    if (isSameDate && !isExitEvent) entry.remove();
+  });
+};
+
 const applyOfficialEvents = () => {
   const entries = [...document.querySelectorAll('.homework-entry')];
 
@@ -99,6 +114,7 @@ const applyOfficialEvents = () => {
   });
 
   restoreMawlidAsNormalSaturday();
+  removeNormalExitEntry();
 };
 
 const applyFullDates = () => {
