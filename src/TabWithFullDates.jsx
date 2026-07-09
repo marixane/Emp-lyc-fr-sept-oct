@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useLayoutEffect } from 'react';
 import Tab from './Tab.jsx';
 
 const SCHOOL_START_YEAR = 2026;
@@ -47,9 +47,8 @@ const updateDisplayedDates = () => {
 };
 
 export default function TabWithFullDates() {
-  useEffect(() => {
-    const timer = window.setTimeout(updateDisplayedDates, 0);
-    return () => window.clearTimeout(timer);
+  useLayoutEffect(() => {
+    updateDisplayedDates();
   }, []);
 
   return <>
