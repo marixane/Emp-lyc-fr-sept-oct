@@ -20,7 +20,11 @@ const correctSchoolCalendar = () => ({
       ["{ date: '07/12', label: 'Vacances intermédiaires 2' }", "{ date: '06/12', label: 'Vacances intermédiaires 2' }"],
       ["{ date: '15/03', label: 'Vacances intermédiaires 3' }", "{ date: '21/03', label: 'Vacances intermédiaires 3' }"],
       ["{ date: '03/05', label: 'Vacances intermédiaires 4' }", "{ date: '09/05', label: 'Vacances intermédiaires 4' }"],
-      ["{ name: 'Vacances intermédiaires 3', date: '15-22/03/2027', days: '8 jours', type: 'Scolaire' }", "{ name: 'Vacances intermédiaires 3', date: '21-28/03/2027', days: '8 jours', type: 'Scolaire' }"]
+      ["{ name: 'Vacances intermédiaires 3', date: '15-22/03/2027', days: '8 jours', type: 'Scolaire' }", "{ name: 'Vacances intermédiaires 3', date: '21-28/03/2027', days: '8 jours', type: 'Scolaire' }"],
+      ["const EXAM_EVENTS = MANDATORY_EVENTS.filter((event) => event.type === 'exam');", "const EXAM_EVENTS = MANDATORY_EVENTS.filter((event) => event.type === 'exam');\nconst PAGE_EVENTS = MANDATORY_EVENTS.filter((event) => !['Examen : Examen normalisé local', 'Examen : Examen régional', 'Examen : Examen normalisé provincial'].includes(event.text));"],
+      ["const getMandatoryEventStart = (monthDate) => MANDATORY_EVENTS.filter((event) => event.start === monthDate);", "const getMandatoryEventStart = (monthDate) => PAGE_EVENTS.filter((event) => event.start === monthDate);"],
+      ["const isInsideMandatoryEventAfterStart = (monthDate) => MANDATORY_EVENTS.some((event) => {", "const isInsideMandatoryEventAfterStart = (monthDate) => PAGE_EVENTS.some((event) => {"],
+      ["const isInsideHolidayEvent = (monthDate) => MANDATORY_EVENTS.some((event) => {", "const isInsideHolidayEvent = (monthDate) => PAGE_EVENTS.some((event) => {" ]
     ];
 
     let transformed = code;
