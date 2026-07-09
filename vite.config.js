@@ -5,7 +5,7 @@ const correctSchoolCalendar = () => ({
   name: 'correct-school-calendar-2026-2027',
   enforce: 'pre',
   transform(code, id) {
-    if (!id.endsWith('/src/Tab.jsx') && !id.endsWith('/src/MoroccoHolidaysPage.jsx') && !id.endsWith('/src/main.jsx')) return null;
+    if (!id.endsWith('/src/Tab.jsx') && !id.endsWith('/src/MoroccoHolidaysPage.jsx') && !id.endsWith('/src/main.jsx') && !id.endsWith('/src/cahier-pdf-button-safari-safe.js')) return null;
 
     const replacements = [
       ["import './cahier-hide-after-july10-safe.js';", "import './cahier-event-badge-center.css';\n// Barre calculée directement dans React : aucun observateur DOM dynamique."],
@@ -25,7 +25,8 @@ const correctSchoolCalendar = () => ({
       ["const EXAM_EVENTS = MANDATORY_EVENTS.filter((event) => event.type === 'exam');", "const EXAM_EVENTS = MANDATORY_EVENTS.filter((event) => event.type === 'exam');\nconst PAGE_EVENTS = MANDATORY_EVENTS.filter((event) => !['Examen : Examen normalisé local', 'Examen : Examen régional', 'Examen : Examen normalisé provincial'].includes(event.text));"],
       ["const getMandatoryEventStart = (monthDate) => MANDATORY_EVENTS.filter((event) => event.start === monthDate);", "const getMandatoryEventStart = (monthDate) => PAGE_EVENTS.filter((event) => event.start === monthDate);"],
       ["const isInsideMandatoryEventAfterStart = (monthDate) => MANDATORY_EVENTS.some((event) => {", "const isInsideMandatoryEventAfterStart = (monthDate) => PAGE_EVENTS.some((event) => {"],
-      ["const isInsideHolidayEvent = (monthDate) => MANDATORY_EVENTS.some((event) => {", "const isInsideHolidayEvent = (monthDate) => PAGE_EVENTS.some((event) => {" ]
+      ["const isInsideHolidayEvent = (monthDate) => MANDATORY_EVENTS.some((event) => {", "const isInsideHolidayEvent = (monthDate) => PAGE_EVENTS.some((event) => {"],
+      ["applySessionDurationsForPdf(zone);\n  removeAfterJuly10(zone);", "applySessionDurationsForPdf(zone);\n  zone.querySelectorAll('.homework-date').forEach((node) => node.style.setProperty('font-size', '28px', 'important'));\n  removeAfterJuly10(zone);"]
     ];
 
     let transformed = code;
