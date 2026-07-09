@@ -4,7 +4,7 @@ const SCHOOL_END = new Date(2027, 6, 10, 12, 0, 0, 0);
 const FLAG_DATES = [
   { title: 'Vacances intermédiaires 1', date: new Date(2026, 9, 18, 12, 0, 0, 0) },
   { title: 'Vacances intermédiaires 2', date: new Date(2026, 11, 6, 12, 0, 0, 0) },
-  { title: 'Vacances intermédiaires 3', date: new Date(2027, 2, 15, 12, 0, 0, 0) },
+  { title: 'Vacances intermédiaires 3', date: new Date(2027, 2, 21, 12, 0, 0, 0) },
   { title: 'Vacances intermédiaires 4', date: new Date(2027, 4, 9, 12, 0, 0, 0) }
 ];
 
