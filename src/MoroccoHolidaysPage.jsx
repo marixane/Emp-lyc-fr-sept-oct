@@ -8,6 +8,7 @@ const HOLIDAYS = [
   { name: 'Manifeste de l’Indépendance', date: '11/01/2027', days: '1 jour', type: 'Nationale' },
   { name: 'Nouvel An Amazigh', date: '14/01/2027', days: '1 jour', type: 'Nationale' },
   { name: 'Vacances de mi-année', date: '24-31/01/2027', days: '8 jours', type: 'Scolaire' },
+  { name: 'Vacances intermédiaires 3', date: '15-22/03/2027', days: '8 jours', type: 'Scolaire' },
   { name: 'Aïd Al-Fitr', date: '29 Ramadan - 2 Chawwal 1448', days: '3 à 4 jours', type: 'Religieuse' },
   { name: 'Fête du Travail', date: '01/05/2027', days: '1 jour', type: 'Nationale' },
   { name: 'Vacances intermédiaires 4', date: '09-16/05/2027', days: '8 jours', type: 'Scolaire' },
