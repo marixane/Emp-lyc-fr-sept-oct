@@ -57,10 +57,26 @@ const restoreMawlidAsNormalSaturday = () => {
   if (normalSaturday) {
     const sourceText = normalSaturday.querySelector('.homework-text');
     const sourceSubject = normalSaturday.querySelector('.homework-subject');
-    if (textElement && sourceText) textElement.innerHTML = sourceText.innerHTML;
-    if (subjectElement && sourceSubject) subjectElement.innerHTML = sourceSubject.innerHTML;
+    if (textElement && sourceText) {
+      textElement.innerHTML = sourceText.innerHTML;
+      textElement.setAttribute('style', sourceText.getAttribute('style') || '');
+    }
+    if (subjectElement && sourceSubject) {
+      subjectElement.innerHTML = sourceSubject.innerHTML;
+      subjectElement.setAttribute('style', sourceSubject.getAttribute('style') || '');
+    }
   } else {
-    if (textElement) textElement.textContent = `${'.'.repeat(63)}\n${'.'.repeat(63)}\n${'.'.repeat(63)}`;
+    if (textElement) {
+      textElement.textContent = `${'.'.repeat(63)}\n${'.'.repeat(63)}\n${'.'.repeat(63)}`;
+      textElement.style.background = 'transparent';
+      textElement.style.border = 'none';
+      textElement.style.borderRadius = '0';
+      textElement.style.margin = '0';
+      textElement.style.padding = '8px 10px';
+      textElement.style.color = 'rgba(63, 64, 80, 0.28)';
+      textElement.style.textAlign = 'left';
+      textElement.style.justifyContent = 'initial';
+    }
     if (subjectElement) subjectElement.innerHTML = '';
   }
 
