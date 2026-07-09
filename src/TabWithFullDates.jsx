@@ -4,7 +4,7 @@ import Tab from './Tab.jsx';
 const SCHOOL_START_YEAR = 2026;
 const SCHOOL_END_YEAR = 2027;
 const SCHOOL_END_DATE = new Date(2027, 6, 10);
-const DATE_PATTERN = /\b(\d{2})\/(\d{2})(?!\/\d{4})\b/g;
+const DATE_PATTERN = /\b(\d{2})\/(\d{2})(?![\s/]?\d{4})\b/g;
 const FULL_DATE_PATTERN = /\b(\d{2})\/(\d{2})\/(\d{4})\b/;
 const DAY_NAMES = ['DIMANCHE', 'LUNDI', 'MARDI', 'MERCREDI', 'JEUDI', 'VENDREDI', 'SAMEDI'];
 
@@ -36,14 +36,15 @@ const CANONICAL_EVENTS = [
 ];
 
 const getYearForMonth = (month) => Number(month) >= 9 ? SCHOOL_START_YEAR : SCHOOL_END_YEAR;
-const addSchoolYearToDates = (text) => String(text ?? '').replace(DATE_PATTERN, (_, day, month) => `${day}/${month}/${getYearForMonth(month)}`);
+const normalizeDateSeparators = (text) => String(text ?? '').replace(/\b(\d{2})\/(\d{2})\s+(2026|2027)\b/g, '$1/$2/$3');
+const addSchoolYearToDates = (text) => normalizeDateSeparators(text).replace(DATE_PATTERN, (_, day, month) => `${day}/${month}/${getYearForMonth(month)}`);
 const parseDate = (value) => {
   const [day, month, year] = String(value).split('/').map(Number);
   return new Date(year, month - 1, day);
 };
 const formatDate = (date) => `${String(date.getDate()).padStart(2, '0')}/${String(date.getMonth() + 1).padStart(2, '0')}/${date.getFullYear()}`;
 const getFirstDisplayedDate = (text) => {
-  const match = String(text ?? '').match(FULL_DATE_PATTERN);
+  const match = addSchoolYearToDates(text).match(FULL_DATE_PATTERN);
   return match ? parseDate(match[0]) : null;
 };
 const getDayAndDate = (value) => {
