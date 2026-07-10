@@ -113,6 +113,7 @@ import './cahier-event-badge-center.css';
 
 // Les deux boutons PDF utilisent la même fonction de génération.
 import './cahier-pdf-button-safari-safe.js';
+import './cahier-pdf-preview-wait.js';
 import './cahier-pdf-class-size-fix.js';
 import './cahier-first-saturday-visibility.js';
 
