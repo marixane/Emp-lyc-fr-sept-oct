@@ -9,17 +9,21 @@ export default function CoverPage() {
           <div style={styles.bottomLeftShape2} />
 
           <header style={styles.header}>
-            <div style={styles.identityBlock}>
-              <img
-                src="./ministere-maroc.png"
-                alt="Ministère de l'Éducation Nationale du Royaume du Maroc"
-                style={styles.ministryImage}
-              />
-            </div>
+            <img
+              src="./ministere-maroc.png"
+              alt="Ministère de l'Éducation Nationale du Royaume du Maroc"
+              style={styles.ministryImage}
+            />
 
             <div style={styles.adminBlock}>
-              <div><strong>Académie régionale :</strong> <span style={styles.line}>....................................</span></div>
-              <div><strong>Direction provinciale :</strong> <span style={styles.line}>................................</span></div>
+              <label style={styles.adminRow}>
+                <strong>Académie régionale :</strong>
+                <input type="text" aria-label="Académie régionale" style={styles.adminInput} />
+              </label>
+              <label style={styles.adminRow}>
+                <strong>Direction provinciale :</strong>
+                <input type="text" aria-label="Direction provinciale" style={styles.adminInput} />
+              </label>
             </div>
           </header>
 
@@ -55,13 +59,8 @@ const styles = {
   header: {
     position: 'relative',
     zIndex: 2,
-    display: 'grid',
-    gridTemplateColumns: '1.15fr 1fr',
-    gap: '40px',
-    alignItems: 'start'
-  },
-  identityBlock: {
     display: 'flex',
+    flexDirection: 'column',
     alignItems: 'flex-start'
   },
   ministryImage: {
@@ -73,17 +72,36 @@ const styles = {
     objectPosition: 'left top'
   },
   adminBlock: {
+    width: '560px',
+    maxWidth: '100%',
     display: 'grid',
-    gap: '20px',
-    paddingTop: '10px',
+    gap: '16px',
+    marginTop: '22px',
     fontSize: '17px',
     lineHeight: 1.5
   },
-  line: { whiteSpace: 'nowrap', letterSpacing: '1px' },
+  adminRow: {
+    display: 'grid',
+    gridTemplateColumns: '190px minmax(0, 1fr)',
+    alignItems: 'end',
+    gap: '10px'
+  },
+  adminInput: {
+    width: '100%',
+    minWidth: 0,
+    padding: '2px 4px 4px',
+    boxSizing: 'border-box',
+    border: 'none',
+    borderBottom: '2px dotted #444',
+    outline: 'none',
+    background: 'transparent',
+    color: '#1f1f1f',
+    font: 'inherit'
+  },
   titleBlock: {
     position: 'relative',
     zIndex: 2,
-    marginTop: '260px',
+    marginTop: '110px',
     textAlign: 'center'
   },
   title: {
