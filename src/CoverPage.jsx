@@ -68,6 +68,7 @@ const styles = {
     display: 'block',
     width: '342px',
     maxHeight: '228px',
+    marginTop: '20px',
     objectFit: 'contain',
     objectPosition: 'left top'
   },
