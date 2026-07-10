@@ -333,28 +333,28 @@ const styleButton = (button, side) => {
   button.style.cssText = `position:fixed!important;${horizontalPosition}bottom:18px!important;z-index:2147483647!important;display:block!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important;box-sizing:border-box!important;border:1px solid #15803d!important;border-bottom:3px solid #14532d!important;border-radius:12px!important;padding:9px 15px!important;width:417px!important;height:62px!important;max-width:calc(50vw - 12px)!important;min-width:0!important;background:linear-gradient(180deg,#4ade80 0%,#16a34a 52%,#15803d 100%)!important;color:white!important;font:900 13px Arial,sans-serif!important;text-shadow:0 1px 1px rgba(0,0,0,.38)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.5),0 5px 0 #14532d,0 9px 16px rgba(0,0,0,.3)!important;transform:translateY(-2px)!important;cursor:pointer!important;transition:transform .12s ease,box-shadow .12s ease!important;`;
 };
 
-const createButtons = () => {
-  if (!document.getElementById(PDF_BUTTON_ID)) {
-    const downloadButton = document.createElement('button');
-    downloadButton.id = PDF_BUTTON_ID;
-    downloadButton.type = 'button';
-    downloadButton.textContent = 'Télécharger PDF';
-    downloadButton.title = 'Télécharger toutes les pages A4 en PDF';
-    styleButton(downloadButton, 'right');
-    downloadButton.addEventListener('click', () => exportPdf(downloadButton, 'download'));
-    document.body.append(downloadButton);
-  }
+const freshButton = (id) => {
+  const existing = document.getElementById(id);
+  const button = document.createElement('button');
+  button.id = id;
+  button.type = 'button';
+  if (existing) existing.replaceWith(button);
+  else document.body.append(button);
+  return button;
+};
 
-  if (!document.getElementById(PDF_PREVIEW_BUTTON_ID)) {
-    const previewButton = document.createElement('button');
-    previewButton.id = PDF_PREVIEW_BUTTON_ID;
-    previewButton.type = 'button';
-    previewButton.textContent = 'Voir PDF';
-    previewButton.title = 'Générer et ouvrir toutes les pages A4 dans un nouvel onglet';
-    styleButton(previewButton, 'left');
-    previewButton.addEventListener('click', () => exportPdf(previewButton, 'preview'));
-    document.body.append(previewButton);
-  }
+const createButtons = () => {
+  const downloadButton = freshButton(PDF_BUTTON_ID);
+  downloadButton.textContent = 'Télécharger PDF';
+  downloadButton.title = 'Télécharger toutes les pages A4 en PDF';
+  styleButton(downloadButton, 'right');
+  downloadButton.addEventListener('click', () => exportPdf(downloadButton, 'download'));
+
+  const previewButton = freshButton(PDF_PREVIEW_BUTTON_ID);
+  previewButton.textContent = 'Voir PDF';
+  previewButton.title = 'Générer et ouvrir toutes les pages A4 dans un nouvel onglet';
+  styleButton(previewButton, 'left');
+  previewButton.addEventListener('click', () => exportPdf(previewButton, 'preview'));
 };
 
 if (document.readyState === 'loading') {
