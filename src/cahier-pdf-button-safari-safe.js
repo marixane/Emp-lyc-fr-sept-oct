@@ -1,4 +1,5 @@
 const PDF_BUTTON_ID = 'cahier-pdf-button-stable';
+const PDF_PREVIEW_BUTTON_ID = 'cahier-pdf-preview-stable';
 const A4_WIDTH = '210mm';
 const A4_HEIGHT = '297mm';
 const EXIT_TEXT = 'Signature du Procès-verbal de sortie';
@@ -28,7 +29,7 @@ const EXPORT_CSS = `
     page-break-after: always !important;
   }
   .a4-page:last-child, .cahier-page:last-child { break-after: auto !important; page-break-after: auto !important; }
-  #${PDF_BUTTON_ID}, .app-tabs, .no-print, button { display: none !important; }
+  #${PDF_BUTTON_ID}, #${PDF_PREVIEW_BUTTON_ID}, .app-tabs, .no-print, button { display: none !important; }
   .homework-date { font-size: 28px !important; border-bottom: 2px dotted rgba(63,64,80,.5) !important; padding-bottom: 8px !important; }
   .homework-subject > div { grid-template-columns: 52px 1fr 34px !important; }
   .cahier-session-duration { display: inline-block !important; visibility: visible !important; opacity: 1 !important; color: rgba(55,65,81,.9) !important; font-size: 10px !important; font-weight: 900 !important; text-align: right !important; white-space: nowrap !important; }
@@ -121,7 +122,7 @@ const isAfterJuly10 = (text) => {
 };
 
 const prepareClone = (clone) => {
-  clone.querySelectorAll(`#${PDF_BUTTON_ID}, script, style, link`).forEach((node) => node.remove());
+  clone.querySelectorAll(`#${PDF_BUTTON_ID}, #${PDF_PREVIEW_BUTTON_ID}, script, style, link`).forEach((node) => node.remove());
   clone.querySelectorAll('textarea').forEach((textarea) => {
     textarea.textContent = textarea.value;
     textarea.setAttribute('value', textarea.value);
@@ -241,8 +242,20 @@ const downloadBlob = (blob) => {
   window.setTimeout(() => URL.revokeObjectURL(url), 1500);
 };
 
-const exportPdf = async (button) => {
+const previewBlob = (blob, previewWindow) => {
+  const url = URL.createObjectURL(blob);
+  previewWindow.location.href = url;
+  window.setTimeout(() => URL.revokeObjectURL(url), 60000);
+};
+
+const exportPdf = async (button, mode = 'download') => {
   const original = button.textContent;
+  const previewWindow = mode === 'preview' ? window.open('about:blank', '_blank') : null;
+  if (mode === 'preview' && !previewWindow) {
+    alert('Autorisez les fenêtres surgissantes pour voir le PDF.');
+    return;
+  }
+  if (previewWindow) previewWindow.opener = null;
   button.disabled = true;
   button.textContent = 'Préparation PDF...';
 
@@ -263,11 +276,19 @@ const exportPdf = async (button) => {
       throw new Error(message);
     }
 
-    button.textContent = 'Téléchargement...';
-    downloadBlob(await response.blob());
-    button.textContent = 'PDF téléchargé';
+    const blob = await response.blob();
+    if (mode === 'preview') {
+      button.textContent = 'Ouverture PDF...';
+      previewBlob(blob, previewWindow);
+      button.textContent = 'PDF ouvert';
+    } else {
+      button.textContent = 'Téléchargement...';
+      downloadBlob(blob);
+      button.textContent = 'PDF téléchargé';
+    }
     window.setTimeout(() => { button.textContent = original; }, 900);
   } catch (error) {
+    if (previewWindow && !previewWindow.closed) previewWindow.close();
     alert(`Erreur PDF : ${error?.message || 'export impossible'}`);
     button.textContent = original;
   } finally {
@@ -275,25 +296,38 @@ const exportPdf = async (button) => {
   }
 };
 
-const styleButton = (button) => {
+const styleButton = (button, side) => {
   button.hidden = false;
-  button.style.cssText = 'position:fixed!important;right:8px!important;bottom:18px!important;z-index:2147483647!important;display:block!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important;box-sizing:border-box!important;border:1px solid #15803d!important;border-bottom:3px solid #14532d!important;border-radius:12px!important;padding:9px 15px!important;width:417px!important;height:62px!important;max-width:calc(100vw - 16px)!important;min-width:0!important;background:linear-gradient(180deg,#4ade80 0%,#16a34a 52%,#15803d 100%)!important;color:white!important;font:900 13px Arial,sans-serif!important;text-shadow:0 1px 1px rgba(0,0,0,.38)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.5),0 5px 0 #14532d,0 9px 16px rgba(0,0,0,.3)!important;transform:translateY(-2px)!important;cursor:pointer!important;transition:transform .12s ease,box-shadow .12s ease!important;';
+  const horizontalPosition = side === 'left' ? 'left:8px!important;right:auto!important;' : 'right:8px!important;left:auto!important;';
+  button.style.cssText = `position:fixed!important;${horizontalPosition}bottom:18px!important;z-index:2147483647!important;display:block!important;visibility:visible!important;opacity:1!important;pointer-events:auto!important;box-sizing:border-box!important;border:1px solid #15803d!important;border-bottom:3px solid #14532d!important;border-radius:12px!important;padding:9px 15px!important;width:417px!important;height:62px!important;max-width:calc(50vw - 12px)!important;min-width:0!important;background:linear-gradient(180deg,#4ade80 0%,#16a34a 52%,#15803d 100%)!important;color:white!important;font:900 13px Arial,sans-serif!important;text-shadow:0 1px 1px rgba(0,0,0,.38)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.5),0 5px 0 #14532d,0 9px 16px rgba(0,0,0,.3)!important;transform:translateY(-2px)!important;cursor:pointer!important;transition:transform .12s ease,box-shadow .12s ease!important;`;
 };
 
-const createButton = () => {
-  if (document.getElementById(PDF_BUTTON_ID)) return;
-  const button = document.createElement('button');
-  button.id = PDF_BUTTON_ID;
-  button.type = 'button';
-  button.textContent = 'Télécharger PDF';
-  button.title = 'Télécharger toutes les pages A4 en PDF';
-  styleButton(button);
-  button.addEventListener('click', () => exportPdf(button));
-  document.body.append(button);
+const createButtons = () => {
+  if (!document.getElementById(PDF_BUTTON_ID)) {
+    const downloadButton = document.createElement('button');
+    downloadButton.id = PDF_BUTTON_ID;
+    downloadButton.type = 'button';
+    downloadButton.textContent = 'Télécharger PDF';
+    downloadButton.title = 'Télécharger toutes les pages A4 en PDF';
+    styleButton(downloadButton, 'right');
+    downloadButton.addEventListener('click', () => exportPdf(downloadButton, 'download'));
+    document.body.append(downloadButton);
+  }
+
+  if (!document.getElementById(PDF_PREVIEW_BUTTON_ID)) {
+    const previewButton = document.createElement('button');
+    previewButton.id = PDF_PREVIEW_BUTTON_ID;
+    previewButton.type = 'button';
+    previewButton.textContent = 'Voir PDF';
+    previewButton.title = 'Générer et ouvrir toutes les pages A4 dans un nouvel onglet';
+    styleButton(previewButton, 'left');
+    previewButton.addEventListener('click', () => exportPdf(previewButton, 'preview'));
+    document.body.append(previewButton);
+  }
 };
 
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', createButton, { once: true });
+  document.addEventListener('DOMContentLoaded', createButtons, { once: true });
 } else {
-  createButton();
+  createButtons();
 }
