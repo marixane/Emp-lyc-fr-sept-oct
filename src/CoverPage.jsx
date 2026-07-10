@@ -85,10 +85,10 @@ const styles = {
     width: '620px',
     maxWidth: '100%',
     display: 'grid',
-    gap: '6px',
+    gap: 0,
     marginTop: '4px',
     fontSize: '17px',
-    lineHeight: 1.35
+    lineHeight: 1.15
   },
   adminRow: {
     display: 'grid',
@@ -99,7 +99,7 @@ const styles = {
   adminInput: {
     width: '100%',
     minWidth: 0,
-    padding: '2px 0',
+    padding: 0,
     boxSizing: 'border-box',
     border: 'none',
     outline: 'none',
