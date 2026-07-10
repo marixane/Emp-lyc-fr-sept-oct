@@ -75,24 +75,23 @@ const styles = {
     width: '560px',
     maxWidth: '100%',
     display: 'grid',
-    gap: '16px',
-    marginTop: '22px',
+    gap: '6px',
+    marginTop: '4px',
     fontSize: '17px',
-    lineHeight: 1.5
+    lineHeight: 1.35
   },
   adminRow: {
     display: 'grid',
     gridTemplateColumns: '190px minmax(0, 1fr)',
-    alignItems: 'end',
-    gap: '10px'
+    alignItems: 'center',
+    gap: '8px'
   },
   adminInput: {
     width: '100%',
     minWidth: 0,
-    padding: '2px 4px 4px',
+    padding: '2px 4px',
     boxSizing: 'border-box',
     border: 'none',
-    borderBottom: '2px dotted #444',
     outline: 'none',
     background: 'transparent',
     color: '#1f1f1f',
