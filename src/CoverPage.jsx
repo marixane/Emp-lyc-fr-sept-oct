@@ -48,8 +48,8 @@ export default function CoverPage() {
             <div style={styles.infoRow}>
               <strong>Classes :</strong>
               <div style={styles.classLines}>
-                <span style={styles.fieldLine} />
-                <span style={styles.fieldLine} />
+                <input type="text" aria-label="Classes ligne 1" style={styles.classInput} />
+                <input type="text" aria-label="Classes ligne 2" style={styles.classInput} />
               </div>
             </div>
           </section>
@@ -157,6 +157,18 @@ const styles = {
   classLines: {
     display: 'grid',
     gap: '10px'
+  },
+  classInput: {
+    width: '100%',
+    height: '26px',
+    padding: '0 2px',
+    boxSizing: 'border-box',
+    border: 'none',
+    borderBottom: '2px dotted #444',
+    outline: 'none',
+    background: 'transparent',
+    color: '#1f1f1f',
+    font: 'inherit'
   },
   fieldLine: {
     display: 'block',
