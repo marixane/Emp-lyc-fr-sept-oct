@@ -26,7 +26,7 @@ const arrangeTimetableControls = () => {
   total.style.setProperty('justify-content', 'center', 'important');
   total.style.setProperty('width', 'fit-content', 'important');
   total.style.setProperty('min-width', '240px', 'important');
-  total.style.setProperty('margin', '44px auto 0', 'important');
+  total.style.setProperty('margin', '64px auto 0', 'important');
   total.style.setProperty('padding', '14px 28px', 'important');
   total.style.setProperty('border', '2px solid rgba(30,64,175,.22)', 'important');
   total.style.setProperty('border-radius', '16px', 'important');
@@ -35,7 +35,7 @@ const arrangeTimetableControls = () => {
   total.style.setProperty('font-size', '20px', 'important');
   total.style.setProperty('font-weight', '800', 'important');
   total.style.setProperty('color', '#0f172a', 'important');
-  total.style.setProperty('transform', 'none', 'important');
+  total.style.setProperty('transform', 'translateX(30px)', 'important');
 
   return page;
 };
