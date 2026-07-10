@@ -63,7 +63,7 @@ export default function CoverPage() {
                 style={styles.fieldEditable}
               />
             </div>
-            <div style={styles.infoRow}>
+            <div style={styles.classInfoRow}>
               <strong>Classes :</strong>
               <div style={styles.classLines}>
                 <div
@@ -183,6 +183,12 @@ const styles = {
     display: 'grid',
     gridTemplateColumns: '150px 1fr',
     alignItems: 'end',
+    fontSize: '20px'
+  },
+  classInfoRow: {
+    display: 'grid',
+    gridTemplateColumns: '150px 1fr',
+    alignItems: 'start',
     fontSize: '20px'
   },
   classLines: {
