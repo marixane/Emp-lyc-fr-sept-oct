@@ -278,9 +278,9 @@ const exportPdf = async (button, mode = 'download') => {
     return;
   }
   if (previewWindow) {
-    previewWindow.opener = null;
     previewWindow.document.title = 'Génération de l’aperçu PDF…';
     previewWindow.document.body.innerHTML = '<p style="font:700 18px Arial,sans-serif;padding:32px;color:#0f172a">Génération du PDF en cours…</p>';
+    previewWindow.focus();
   }
   button.disabled = true;
   button.textContent = 'Préparation PDF...';
