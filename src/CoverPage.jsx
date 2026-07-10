@@ -43,8 +43,26 @@ export default function CoverPage() {
           </section>
 
           <section style={styles.infoBox}>
-            <div style={styles.infoRow}><strong>Nom :</strong><span style={styles.fieldLine} /></div>
-            <div style={styles.infoRow}><strong>Établissement :</strong><span style={styles.fieldLine} /></div>
+            <div style={styles.infoRow}>
+              <strong>Nom :</strong>
+              <div
+                contentEditable
+                suppressContentEditableWarning
+                role="textbox"
+                aria-label="Nom"
+                style={styles.fieldEditable}
+              />
+            </div>
+            <div style={styles.infoRow}>
+              <strong>Établissement :</strong>
+              <div
+                contentEditable
+                suppressContentEditableWarning
+                role="textbox"
+                aria-label="Établissement"
+                style={styles.fieldEditable}
+              />
+            </div>
             <div style={styles.infoRow}>
               <strong>Classes :</strong>
               <div style={styles.classLines}>
@@ -174,7 +192,7 @@ const styles = {
     zIndex: 4,
     pointerEvents: 'auto'
   },
-  classEditable: {
+  fieldEditable: {
     display: 'block',
     width: '100%',
     minHeight: '26px',
@@ -189,10 +207,20 @@ const styles = {
     pointerEvents: 'auto',
     userSelect: 'text'
   },
-  fieldLine: {
+  classEditable: {
     display: 'block',
-    height: '24px',
-    borderBottom: '2px dotted #444'
+    width: '100%',
+    minHeight: '26px',
+    padding: '0 2px',
+    boxSizing: 'border-box',
+    borderBottom: '2px dotted #444',
+    outline: 'none',
+    background: 'transparent',
+    color: '#1f1f1f',
+    font: 'inherit',
+    cursor: 'text',
+    pointerEvents: 'auto',
+    userSelect: 'text'
   },
   schoolYear: {
     position: 'absolute',
