@@ -45,7 +45,13 @@ export default function CoverPage() {
           <section style={styles.infoBox}>
             <div style={styles.infoRow}><strong>Nom :</strong><span style={styles.fieldLine} /></div>
             <div style={styles.infoRow}><strong>Établissement :</strong><span style={styles.fieldLine} /></div>
-            <div style={styles.infoRow}><strong>Classes :</strong><span style={styles.fieldLine} /></div>
+            <div style={styles.infoRow}>
+              <strong>Classes :</strong>
+              <div style={styles.classLines}>
+                <span style={styles.fieldLine} />
+                <span style={styles.fieldLine} />
+              </div>
+            </div>
           </section>
 
           <div style={styles.schoolYear}>Année scolaire 2026 / 2027</div>
@@ -147,6 +153,10 @@ const styles = {
     gridTemplateColumns: '150px 1fr',
     alignItems: 'end',
     fontSize: '20px'
+  },
+  classLines: {
+    display: 'grid',
+    gap: '10px'
   },
   fieldLine: {
     display: 'block',
