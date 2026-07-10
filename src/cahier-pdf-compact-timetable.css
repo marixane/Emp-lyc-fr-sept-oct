@@ -1,0 +1,39 @@
+.compact-timetable-pdf-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 8px 0 10px;
+  padding: 7px 10px;
+  border: 1px solid rgba(17, 24, 39, 0.2);
+  border-radius: 9px;
+  background: #fff;
+  color: #111827;
+  font: 700 13px Arial, sans-serif;
+  cursor: pointer;
+}
+
+.compact-timetable-pdf-toggle input {
+  width: 16px;
+  height: 16px;
+}
+
+@media print {
+  .timetable-table.compact-pdf-hours {
+    width: 96% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    table-layout: fixed !important;
+  }
+
+  .timetable-table.compact-pdf-hours thead th:nth-child(6),
+  .timetable-table.compact-pdf-hours thead th:nth-child(7),
+  .timetable-table.compact-pdf-hours tbody tr > td:nth-child(6),
+  .timetable-table.compact-pdf-hours tbody tr > td:nth-child(7) {
+    display: none !important;
+  }
+
+  .timetable-table.compact-pdf-hours thead th:nth-child(8),
+  .timetable-table.compact-pdf-hours tbody tr > td:nth-child(8) {
+    border-left: 4px solid #000 !important;
+  }
+}
