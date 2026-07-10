@@ -1,9 +1,11 @@
-.cahier-exams-list + div > div > div:last-child {
+div[style*="min-height: 130px"] {
   font-size: 0 !important;
   color: transparent !important;
+  line-height: 0 !important;
 }
 
-.cahier-exams-list + div > div > div:last-child > span {
+div[style*="min-height: 130px"] > span {
   font-size: 12px !important;
   color: #111827 !important;
+  line-height: 1.1 !important;
 }
