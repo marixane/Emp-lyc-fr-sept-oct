@@ -39,7 +39,7 @@ export default function CoverPage() {
 
           <section style={styles.titleBlock}>
             <h1 style={styles.title}>Cahier de textes</h1>
-            <p style={styles.subtitle}>Des professeurs de l’enseignement secondaire qualifiant</p>
+            <p style={styles.subtitle}>Enseignement secondaire qualifiant</p>
           </section>
 
           <section style={styles.infoBox}>
