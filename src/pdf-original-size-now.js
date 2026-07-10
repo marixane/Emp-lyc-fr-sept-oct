@@ -3,9 +3,18 @@ import jsPDF from 'jspdf';
 
 let pdfDirectBusy = false;
 
+const CAHIER_PDF_BUTTON_IDS = new Set([
+  'cahier-pdf-preview-stable',
+  'cahier-pdf-button-stable'
+]);
+
+function isCahierPdfButton(button) {
+  return Boolean(button && CAHIER_PDF_BUTTON_IDS.has(button.id));
+}
+
 function getPdfButton(target) {
   const button = target && target.closest && target.closest('button');
-  if (!button || button.disabled) return null;
+  if (!button || button.disabled || isCahierPdfButton(button)) return null;
   const text = String(button.textContent || '').trim().toLowerCase();
   if (text.includes('voir pdf')) return { button: button, mode: 'preview' };
   if (text.includes('exporter pdf')) return { button: button, mode: 'download' };
@@ -15,7 +24,7 @@ function getPdfButton(target) {
 function findPdfPanelButton(mode) {
   const wanted = mode === 'preview' ? 'voir pdf' : 'exporter pdf';
   return Array.from(document.querySelectorAll('.panel button')).find(function (button) {
-    return String(button.textContent || '').trim().toLowerCase().includes(wanted);
+    return !isCahierPdfButton(button) && String(button.textContent || '').trim().toLowerCase().includes(wanted);
   }) || null;
 }
 
@@ -293,6 +302,9 @@ function startPdfAction(mode) {
 window.startExamPdf = startPdfAction;
 
 document.addEventListener('click', function (event) {
+  const clickedButton = event.target && event.target.closest && event.target.closest('button');
+  if (isCahierPdfButton(clickedButton)) return;
+
   const action = getPdfButton(event.target);
   if (!action) return;
 
