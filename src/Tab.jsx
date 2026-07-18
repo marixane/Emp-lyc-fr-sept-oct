@@ -188,7 +188,7 @@ const getSchoolYear = () => {
 const getSchoolProgressBounds = () => {
   return {
     start: new Date(Date.UTC(2026, 8, 1)),
-    end: new Date(Date.UTC(2027, 8, 10))
+    end: new Date(Date.UTC(2026, 9, 31))
   };
 };
 const getSchoolProgressPercentForDate = (date) => {
@@ -217,7 +217,7 @@ const getSchoolHomeworkDates = () => {
   const startYear = getSchoolStartYear();
   const dates = [];
   const current = new Date(startYear, 8, 1);
-  const end = new Date(startYear + 1, 6, 31);
+  const end = new Date(startYear, 9, 31);
   while (current <= end) {
     dates.push(new Date(current));
     current.setDate(current.getDate() + 1);

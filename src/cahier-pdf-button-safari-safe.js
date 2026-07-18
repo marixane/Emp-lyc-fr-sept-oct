@@ -308,8 +308,7 @@ const buildExportHtml = () => {
   prepareCompactTimetablesForPdf(zone);
   applySessionDurationsForPdf(zone);
   removeAfterJuly10(zone);
-  appendExitPageForEachGroup(zone);
-  ensurePdfIncludesJuly10(zone);
+
   applyFullYearsForPdf(zone);
   keepReferencePagesLast(zone);
 
