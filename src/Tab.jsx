@@ -271,6 +271,8 @@ export default function Tab({ onClassGroupsChange }) {
   const [draggedClass, setDraggedClass] = useState(null);
   const [generatedData, setGeneratedData] = useState(null);
   const [classColors, setClassColors] = useState({});
+  const [compactTimetable, setCompactTimetable] = useState(() => localStorage.getItem('cahierCompactTimetablePdf') !== '0');
+  useEffect(() => { const update = (event) => setCompactTimetable(Boolean(event.detail?.enabled)); window.addEventListener('cahier-compact-timetable-change', update); return () => window.removeEventListener('cahier-compact-timetable-change', update); }, []);
   const schoolYear = getSchoolYear();
 
   const validateOnEnter = (event) => {
@@ -437,10 +439,12 @@ export default function Tab({ onClassGroupsChange }) {
     };
   }, [assignmentWeekLabels]);
 
-  const canExtendLeft = (row, hourIndex) => hourIndex > 0 && Boolean(normalizeCell(row.cells[hours[hourIndex]]).text.trim()) && !normalizeCell(row.cells[hours[hourIndex - 1]]).hidden && !normalizeCell(row.cells[hours[hourIndex - 1]]).text.trim();
+  const previousExpansionIndex = (hourIndex) => compactTimetable && (hourIndex - 1 === 4 || hourIndex - 1 === 5) ? 3 : hourIndex - 1;
+  const nextExpansionIndex = (hourIndex, span) => compactTimetable && (hourIndex + span === 4 || hourIndex + span === 5) ? 6 : hourIndex + span;
+  const canExtendLeft = (row, hourIndex) => { const targetIndex = previousExpansionIndex(hourIndex); return targetIndex >= 0 && Boolean(normalizeCell(row.cells[hours[hourIndex]]).text.trim()) && !normalizeCell(row.cells[hours[targetIndex]]).hidden && !normalizeCell(row.cells[hours[targetIndex]]).text.trim(); };
   const canExtendRight = (row, hourIndex) => {
     const cell = normalizeCell(row.cells[hours[hourIndex]]);
-    const nextIndex = hourIndex + cell.span;
+    const nextIndex = nextExpansionIndex(hourIndex, cell.span);
     return Boolean(cell.text.trim()) && nextIndex < hours.length && !normalizeCell(row.cells[hours[nextIndex]]).hidden && !normalizeCell(row.cells[hours[nextIndex]]).text.trim();
   };
   const canPasteCell = (row, hourIndex, cellToPaste) => {
@@ -499,13 +503,19 @@ export default function Tab({ onClassGroupsChange }) {
     setRows((current) => current.map((row, i) => {
       if (i !== dayIndex || !canExtendLeft(row, hourIndex)) return row;
       const cell = normalizeCell(row.cells[hours[hourIndex]]);
-      return { ...row, cells: { ...row.cells, [hours[hourIndex - 1]]: { ...cell, span: cell.span + 1, hidden: false }, [hours[hourIndex]]: { ...createCell(), hidden: true } } };
+      const targetIndex = previousExpansionIndex(hourIndex);
+      const nextCells = { ...row.cells, [hours[targetIndex]]: { ...cell, span: cell.span + (hourIndex - targetIndex), hidden: false } };
+      for (let index = targetIndex + 1; index <= hourIndex; index += 1) nextCells[hours[index]] = { ...createCell(), hidden: true };
+      return { ...row, cells: nextCells };
     }));
   };
   const extendCellRight = (dayIndex, hourIndex) => setRows((current) => current.map((row, i) => {
     if (i !== dayIndex || !canExtendRight(row, hourIndex)) return row;
     const cell = normalizeCell(row.cells[hours[hourIndex]]);
-    return { ...row, cells: { ...row.cells, [hours[hourIndex]]: { ...cell, span: cell.span + 1, hidden: false }, [hours[hourIndex + cell.span]]: { ...createCell(), hidden: true } } };
+    const targetIndex = nextExpansionIndex(hourIndex, cell.span);
+    const nextCells = { ...row.cells, [hours[hourIndex]]: { ...cell, span: targetIndex - hourIndex + 1, hidden: false } };
+    for (let index = hourIndex + cell.span; index <= targetIndex; index += 1) nextCells[hours[index]] = { ...createCell(), hidden: true };
+    return { ...row, cells: nextCells };
   }));
   const shrinkCellLeft = (dayIndex, hourIndex) => setRows((current) => current.map((row, i) => {
     if (i !== dayIndex) return row;

@@ -1,21 +1,13 @@
-.compact-timetable-pdf-toggle {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  margin: 8px 0 10px;
-  padding: 7px 10px;
-  border: 1px solid rgba(17, 24, 39, 0.2);
-  border-radius: 9px;
-  background: #fff;
-  color: #111827;
-  font: 700 13px Arial, sans-serif;
-  cursor: pointer;
-}
-
-.compact-timetable-pdf-toggle input {
-  width: 16px;
-  height: 16px;
-}
+.compact-timetable-pdf-toggle { display:flex!important;align-items:center;justify-content:center;box-sizing:border-box;width:100%;height:100%;min-height:26px;margin:0;padding:0;border:1px solid #c8ced6;border-bottom:3px solid #8b95a3;border-radius:0;background:linear-gradient(180deg,#f8fafc 0%,#e5e7eb 100%);color:#4b5563;cursor:pointer;box-shadow:inset 0 1px 0 #fff,inset 0 -1px 0 rgba(71,85,105,.14),0 2px 4px rgba(15,23,42,.22);transform:translateY(-1px);transition:background .15s ease,box-shadow .12s ease,color .15s ease,transform .12s ease}
+.compact-timetable-pdf-toggle input{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+.compact-timetable-pdf-toggle:hover{background:linear-gradient(180deg,#fff 0%,#dfe3e8 100%);color:#111827}
+.compact-timetable-pdf-toggle:active{background:rgba(0,0,0,.10);border-bottom-width:1px;box-shadow:inset 0 2px 4px rgba(0,0,0,.20);transform:translateY(1px)}
+.compact-timetable-pdf-icon{display:block;color:currentColor;opacity:.9}
+.compact-timetable-pdf-icon svg{display:block;width:29px;height:18px;fill:none;stroke:currentColor;stroke-width:2.35;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 1px 0 #fff) drop-shadow(0 1px 1px rgba(15,23,42,.25))}
+.compact-timetable-day-header{padding:0!important;text-align:center!important;vertical-align:middle!important;overflow:hidden!important}
+.cahier-page>.timetable-table thead tr{height:28px!important}
+.cahier-page>.timetable-table thead th{height:28px!important;max-height:28px!important}
+.cahier-page>.timetable-table thead th textarea{padding-top:3px!important;line-height:.95!important}
 
 /* La même option agit immédiatement sur le tableau web. */
 .timetable-table.compact-pdf-hours col.cahier-noon-col {

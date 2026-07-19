@@ -5,6 +5,7 @@ const applyCompactTimetableState = (enabled) => {
   document.querySelectorAll('.timetable-table').forEach((table) => {
     table.classList.toggle('compact-pdf-hours', enabled);
   });
+  window.dispatchEvent(new CustomEvent('cahier-compact-timetable-change', { detail: { enabled } }));
 };
 
 const arrangeTimetableControls = () => {
@@ -43,6 +44,9 @@ const arrangeTimetableControls = () => {
 const installCompactTimetableToggle = () => {
   const page = arrangeTimetableControls();
   if (!page) return;
+  const table = page.querySelector('.timetable-table');
+  const dayHeader = table?.tHead?.rows?.[0]?.cells?.[0];
+  if (!dayHeader) return;
 
   let wrapper = document.getElementById('compact-timetable-pdf-toggle');
   if (!wrapper) {
@@ -52,30 +56,36 @@ const installCompactTimetableToggle = () => {
 
     const checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
-    checkbox.checked = localStorage.getItem(STORAGE_KEY) === '1';
+    checkbox.checked = localStorage.getItem(STORAGE_KEY) !== '0';
+    checkbox.setAttribute('aria-label', 'Réduire ou élargir le tableau');
 
-    const text = document.createElement('span');
-    text.textContent = 'PDF sans 12h–14h';
+    const icon = document.createElement('span');
+    icon.className = 'compact-timetable-pdf-icon';
+    icon.setAttribute('aria-hidden', 'true');
+    const refreshAppearance = () => {
+      icon.innerHTML = checkbox.checked
+        ? '<svg viewBox="0 0 32 18" focusable="false"><path d="M14 9H3m0 0 5-5M3 9l5 5M18 9h11m0 0-5-5m5 5-5 5"/></svg>'
+        : '<svg viewBox="0 0 32 18" focusable="false"><path d="M3 9h11m0 0-5-5m5 5-5 5M29 9H18m0 0 5-5m-5 5 5 5"/></svg>';
+      wrapper.title = checkbox.checked ? 'Élargir le tableau' : 'Réduire le tableau';
+      wrapper.setAttribute('aria-label', wrapper.title);
+      wrapper.setAttribute('data-compact', checkbox.checked ? 'true' : 'false');
+    };
 
     checkbox.addEventListener('change', () => {
       const enabled = checkbox.checked;
       localStorage.setItem(STORAGE_KEY, enabled ? '1' : '0');
       applyCompactTimetableState(enabled);
+      refreshAppearance();
     });
 
-    wrapper.append(checkbox, text);
+    wrapper.append(checkbox, icon);
+    refreshAppearance();
   }
 
-  if (wrapper.parentElement !== page) {
-    page.prepend(wrapper);
+  if (wrapper.parentElement !== dayHeader) {
+    dayHeader.replaceChildren(wrapper);
   }
-
-  wrapper.style.setProperty('position', 'absolute', 'important');
-  wrapper.style.setProperty('top', '22px', 'important');
-  wrapper.style.setProperty('left', '28px', 'important');
-  wrapper.style.setProperty('z-index', '30', 'important');
-  wrapper.style.setProperty('margin', '0', 'important');
-  wrapper.style.setProperty('padding', '9px 14px', 'important');
+  dayHeader.classList.add('compact-timetable-day-header');
 
   const checkbox = wrapper.querySelector('input');
   applyCompactTimetableState(Boolean(checkbox?.checked));
