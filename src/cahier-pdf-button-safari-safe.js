@@ -357,6 +357,18 @@ const submitPreviewForm = (html, previewWindow) => {
   form.remove();
 };
 
+const openReadyPdf = (blob) => {
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.target = '_blank';
+  link.rel = 'noopener';
+  document.body.append(link);
+  link.click();
+  link.remove();
+  window.setTimeout(() => URL.revokeObjectURL(url), 60000);
+};
+
 const exportPdf = async (button, mode = 'download') => {
   const original = button.textContent;
   let previewWindow = null;
@@ -370,12 +382,15 @@ const exportPdf = async (button, mode = 'download') => {
     button.textContent = 'Génération PDF...';
 
     if (mode === 'preview') {
+      const response = await fetch('/api/cahier-pdf', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ html, baseUrl: window.location.origin })
+      });
+      if (!response.ok) throw new Error('Erreur génération PDF');
+      const previewBlob = await response.blob();
       button.textContent = 'Ouverture PDF...';
-      const targetName = `cahier-pdf-preview-${Date.now()}`;
-      previewWindow = window.open('about:blank', targetName);
-      if (!previewWindow) throw new Error('Autorisez les fenêtres surgissantes pour voir le PDF.');
-      showPreviewLoading(previewWindow);
-      submitPreviewForm(html, previewWindow);
+      openReadyPdf(previewBlob);
       window.setTimeout(() => {
         button.textContent = original;
         button.disabled = false;
