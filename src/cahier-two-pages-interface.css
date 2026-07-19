@@ -1,0 +1,9 @@
+/* Le Web conserve les deux pages de configuration. Les pages générées
+   restent rendues hors écran afin d'être incluses dans le PDF. */
+body.cahier-tab-active .clean-cahier-shell .cahier-preview-zone > .a4-page:not(:has(.timetable-table)) {
+  position: fixed !important;
+  left: -100000px !important;
+  top: 0 !important;
+  margin: 0 !important;
+  pointer-events: none !important;
+}

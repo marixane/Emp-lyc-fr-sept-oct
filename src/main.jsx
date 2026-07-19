@@ -86,6 +86,7 @@ import './mobile-touch-drag.js';
 import './mobile-exercice-touch-zone.css';
 import './line-grid-mode.js';
 import './cahier-texte.css';
+import './cahier-two-pages-interface.css';
 import './cahier-left-margin-100.css';
 import './cahier-top-space-fix.css';
 import './cahier-page-numbers.css';
@@ -114,6 +115,7 @@ import './cahier-event-badge-center.css';
 import './cahier-exams-last-in-pdf.js';
 // Les deux boutons PDF utilisent la même fonction de génération.
 import './cahier-pdf-button-safari-safe.js';
+import './cahier-pdf-auto-generate.js';
 import './cahier-generate-pages-button.css';
 import './cahier-pdf-class-size-fix.js';
 import './cahier-first-saturday-visibility.js';
