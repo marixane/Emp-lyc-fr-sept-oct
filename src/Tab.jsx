@@ -561,17 +561,20 @@ export default function Tab({ onClassGroupsChange }) {
           <input value={teacher} onChange={(e) => setTeacher(e.target.value)} onKeyDown={validateOnEnter} />
           <input value={schoolYear} readOnly aria-label="Année scolaire automatique" />
         </header>
-        <table className="timetable-table">
+        <table className="timetable-table" data-cahier-compact-rendered={compactTimetable ? 'true' : undefined}>
           <colgroup>
             <col className="cahier-day-col" />
-            {hours.map((hour, index) => <col key={`col-${hour}-${index}`} className={index === 4 || index === 5 ? 'cahier-noon-col' : undefined} />)}
+            {hours.map((hour, index) => (!compactTimetable || (index !== 4 && index !== 5)) ? <col key={`col-${hour}-${index}`} /> : null)}
           </colgroup>
-          <thead><tr><th>Jour</th>{hours.map((hour, index) => <th key={`${hour}-${index}`}><textarea value={hour} onChange={(e) => updateHour(index, e.target.value)} onKeyDown={validateOnEnter} rows="2" /></th>)}</tr></thead>
+          <thead><tr><th>Jour</th>{hours.map((hour, index) => (!compactTimetable || (index !== 4 && index !== 5)) ? <th key={`${hour}-${index}`}><textarea value={hour} onChange={(e) => updateHour(index, e.target.value)} onKeyDown={validateOnEnter} rows="2" /></th> : null)}</tr></thead>
           <tbody>{rows.map((row, dayIndex) => <tr key={dayIndex}>
             <td className="hour-cell day-cell"><textarea value={row.day} onChange={(e) => updateDay(dayIndex, e.target.value)} onKeyDown={validateOnEnter} rows="2" /></td>
             {hours.map((hour, hourIndex) => {
               const cell = normalizeCell(row.cells[hour]);
+              if (compactTimetable && (hourIndex === 4 || hourIndex === 5)) return null;
               if (cell.hidden) return null;
+              if (compactTimetable) cell.span = Array.from({ length: cell.span }, (_, offset) => hourIndex + offset).filter((index) => index !== 4 && index !== 5 && index < hours.length).length;
+              if (cell.span < 1) return null;
               const hasClass = Boolean(cell.text.trim());
               const cellKey = `${dayIndex}-${hourIndex}`;
               const canDropHere = !hasClass && draggedCell && canPasteCell(row, hourIndex, draggedCell);

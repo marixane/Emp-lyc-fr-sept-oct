@@ -196,7 +196,7 @@ const prepareCompactTimetablesForPdf = (zone) => {
   };
 
   zone.querySelectorAll('.timetable-table.compact-pdf-hours').forEach((table) => {
-    table.querySelectorAll('thead tr, tbody tr').forEach(transformRow);
+    if (table.dataset.cahierCompactRendered !== 'true') table.querySelectorAll('thead tr, tbody tr').forEach(transformRow);
     table.style.setProperty('width', '96%', 'important');
     table.style.setProperty('margin-left', 'auto', 'important');
     table.style.setProperty('margin-right', 'auto', 'important');
