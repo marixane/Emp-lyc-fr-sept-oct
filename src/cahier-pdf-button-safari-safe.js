@@ -373,6 +373,16 @@ const exportPdf = async (button, mode = 'download') => {
   const original = button.textContent;
   let previewWindow = null;
 
+  if (mode === 'preview' && button.dataset.readyPdfUrl) {
+    const url = button.dataset.readyPdfUrl;
+    window.open(url, '_blank', 'noopener');
+    delete button.dataset.readyPdfUrl;
+    button.textContent = button.dataset.previewIdleLabel || 'Aperçu PDF';
+    window.setTimeout(() => URL.revokeObjectURL(url), 60000);
+    return;
+  }
+  if (mode === 'preview') button.dataset.previewIdleLabel = original;
+
   button.disabled = true;
   button.textContent = 'Préparation PDF...';
 
@@ -389,12 +399,9 @@ const exportPdf = async (button, mode = 'download') => {
       });
       if (!response.ok) throw new Error('Erreur génération PDF');
       const previewBlob = await response.blob();
-      button.textContent = 'Ouverture PDF...';
-      openReadyPdf(previewBlob);
-      window.setTimeout(() => {
-        button.textContent = original;
-        button.disabled = false;
-      }, 1500);
+      button.dataset.readyPdfUrl = URL.createObjectURL(previewBlob);
+      button.textContent = 'Ouvrir PDF';
+      button.disabled = false;
       return;
     }
 

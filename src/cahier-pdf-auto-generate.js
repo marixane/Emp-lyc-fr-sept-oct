@@ -4,6 +4,7 @@ const allowedClicks = new WeakSet();
 document.addEventListener('click', (event) => {
   const button = event.target.closest('button');
   if (!button || !pdfButtonIds.has(button.id)) return;
+  if (button.dataset.readyPdfUrl) return;
   if (allowedClicks.has(button)) { allowedClicks.delete(button); return; }
   event.preventDefault(); event.stopImmediatePropagation();
   const finish = () => { window.removeEventListener('cahier-pages-generated', finish); allowedClicks.add(button); button.click(); };
