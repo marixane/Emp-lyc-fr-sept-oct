@@ -317,6 +317,22 @@ body.cahier-tab-active .exercise-line-count-overlay {
   background: white;
 }
 
+body.mobile-touch-drag-active {
+  touch-action: none;
+  overscroll-behavior: none;
+}
+body.mobile-touch-drag-active [data-cahier-cell],
+body.mobile-touch-drag-active [data-cahier-group-index],
+body.mobile-touch-drag-active .cahier-class-group-chip {
+  touch-action: none;
+}
+@media (max-width: 1200px) {
+  [data-cahier-cell],
+  .cahier-class-group-chip {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
 .room-control {
   position: absolute;
   right: 1px;

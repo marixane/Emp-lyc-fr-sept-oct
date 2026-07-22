@@ -269,6 +269,7 @@ export default function Tab({ onClassGroupsChange }) {
   const [dragOverCell, setDragOverCell] = useState(null);
   const [manualGroups, setManualGroups] = useState(null);
   const [draggedClass, setDraggedClass] = useState(null);
+  const touchDragRef = useRef(null);
   const [generatedData, setGeneratedData] = useState(null);
   const [classColors, setClassColors] = useState({});
   const [compactTimetable, setCompactTimetable] = useState(() => localStorage.getItem('cahierCompactTimetablePdf') !== '0');
@@ -504,6 +505,80 @@ export default function Tab({ onClassGroupsChange }) {
     setDragOverCell(null);
   };
 
+  const isTouchLayout = () => typeof window !== 'undefined' && window.matchMedia('(max-width: 1200px)').matches;
+  const touchPoint = (event) => event.touches?.[0] || event.changedTouches?.[0] || null;
+  const clearTouchDrag = () => {
+    const current = touchDragRef.current;
+    if (current?.timer) window.clearTimeout(current.timer);
+    touchDragRef.current = null;
+    document.body.classList.remove('mobile-touch-drag-active');
+    setDraggedCell(null);
+    setDragOverCell(null);
+    setDraggedClass(null);
+  };
+  const targetCellAtPoint = (point) => {
+    if (!point) return null;
+    const element = document.elementFromPoint(point.clientX, point.clientY)?.closest('[data-cahier-cell]');
+    if (!element) return null;
+    return { dayIndex: Number(element.dataset.dayIndex), hourIndex: Number(element.dataset.hourIndex) };
+  };
+  const targetGroupAtPoint = (point) => {
+    if (!point) return null;
+    const element = document.elementFromPoint(point.clientX, point.clientY)?.closest('[data-cahier-group-index]');
+    return element ? Number(element.dataset.cahierGroupIndex) : null;
+  };
+  const beginTouchDrag = (event, payload) => {
+    if (!isTouchLayout() || event.target.closest('input,textarea,button,.span-tools,.room-control')) return;
+    const point = touchPoint(event);
+    if (!point) return;
+    clearTouchDrag();
+    const state = { ...payload, startX: point.clientX, startY: point.clientY, active: false, timer: null };
+    state.timer = window.setTimeout(() => {
+      state.active = true;
+      touchDragRef.current = state;
+      document.body.classList.add('mobile-touch-drag-active');
+      if (state.kind === 'cell') {
+        setDraggedCell(cloneCell(state.cell));
+        setCopiedCell(cloneCell(state.cell));
+        setSelectedCell(`${state.dayIndex}-${state.hourIndex}`);
+      } else setDraggedClass(state.className);
+      navigator.vibrate?.(15);
+    }, 220);
+    touchDragRef.current = state;
+  };
+  const handleTouchMove = (event) => {
+    const state = touchDragRef.current;
+    if (!state) return;
+    const point = touchPoint(event);
+    if (!state.active) {
+      if (point && (Math.abs(point.clientX - state.startX) > 8 || Math.abs(point.clientY - state.startY) > 8)) clearTouchDrag();
+      return;
+    }
+    event.preventDefault();
+    if (state.kind === 'cell') {
+      const target = targetCellAtPoint(point);
+      state.target = target;
+      setDragOverCell(target ? `${target.dayIndex}-${target.hourIndex}` : null);
+    } else state.target = targetGroupAtPoint(point);
+  };
+  const handleTouchEnd = (event) => {
+    const state = touchDragRef.current;
+    if (!state) return;
+    const point = touchPoint(event);
+    if (!state.active) { clearTouchDrag(); return; }
+    event.preventDefault();
+    if (state.kind === 'cell') {
+      const target = state.target || targetCellAtPoint(point);
+      const targetRow = target ? rows[target.dayIndex] : null;
+      if (target && targetRow && canPasteCell(targetRow, target.hourIndex, state.cell)) duplicateCellTo(target.dayIndex, target.hourIndex, state.cell);
+    } else {
+      const target = state.target ?? targetGroupAtPoint(point);
+      if (Number.isInteger(target)) moveClassToGroup(state.className, target);
+    }
+    clearTouchDrag();
+  };
+  const handleTouchCancel = () => clearTouchDrag();
+
   const extendCellLeft = (dayIndex, hourIndex) => {
     if (hourIndex <= 0) return;
     setRows((current) => current.map((row, i) => {
@@ -578,7 +653,7 @@ export default function Tab({ onClassGroupsChange }) {
               const hasClass = Boolean(cell.text.trim());
               const cellKey = `${dayIndex}-${hourIndex}`;
               const canDropHere = !hasClass && draggedCell && canPasteCell(row, hourIndex, draggedCell);
-              return <td key={`${hour}-${hourIndex}`} colSpan={cell.span}><div className={`timetable-cell-content ${hasClass ? 'colored-cell draggable-cell clickable-cell' : ''} ${selectedCell === cellKey ? 'selected-cell' : ''} ${canDropHere || dragOverCell === cellKey ? 'drop-ready-cell' : ''}`} style={hasClass ? { '--cell-color': getClassColor(cell.text) } : undefined} draggable={hasClass} onDragStart={(e) => handleDragStart(e, dayIndex, hourIndex, cell)} onDragEnd={() => { setDraggedCell(null); setDragOverCell(null); }} onDragOver={(e) => handleDragOver(e, dayIndex, hourIndex, row, hasClass)} onDragLeave={() => setDragOverCell(null)} onDrop={(e) => handleDrop(e, dayIndex, hourIndex, row, hasClass)} onClick={hasClass ? () => handleCellClick(dayIndex, hourIndex, cell) : undefined} title={hasClass ? 'Cliquer pour sélectionner ou glisser pour dupliquer' : draggedCell ? 'Déposer ici pour dupliquer' : ''}>
+              return <td key={`${hour}-${hourIndex}`} colSpan={cell.span}><div data-cahier-cell="true" data-day-index={dayIndex} data-hour-index={hourIndex} className={`timetable-cell-content ${hasClass ? 'colored-cell draggable-cell clickable-cell' : ''} ${selectedCell === cellKey ? 'selected-cell' : ''} ${canDropHere || dragOverCell === cellKey ? 'drop-ready-cell' : ''}`} style={hasClass ? { '--cell-color': getClassColor(cell.text) } : undefined} draggable={hasClass} onDragStart={(e) => handleDragStart(e, dayIndex, hourIndex, cell)} onDragEnd={() => { setDraggedCell(null); setDragOverCell(null); }} onDragOver={(e) => handleDragOver(e, dayIndex, hourIndex, row, hasClass)} onDragLeave={() => setDragOverCell(null)} onDrop={(e) => handleDrop(e, dayIndex, hourIndex, row, hasClass)} onTouchStart={(e) => hasClass && beginTouchDrag(e, { kind: 'cell', dayIndex, hourIndex, cell: normalizeCell(cell) })} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd} onTouchCancel={handleTouchCancel} onClick={hasClass ? () => handleCellClick(dayIndex, hourIndex, cell) : (copiedCell && canPasteCell(row, hourIndex, copiedCell) ? () => duplicateCellTo(dayIndex, hourIndex, copiedCell) : undefined)} title={hasClass ? 'Cliquer pour sélectionner ou appuyer longuement pour dupliquer' : copiedCell ? 'Toucher pour dupliquer ici' : ''}>
                 {hasClass && <div className="span-tools no-print" onClick={(e) => e.stopPropagation()}><button type="button" onClick={() => extendCellLeft(dayIndex, hourIndex)} disabled={!canExtendLeft(row, hourIndex)}>‹</button>{cell.span > 1 && <button type="button" className="span-remove-button" onClick={() => shrinkCellLeft(dayIndex, hourIndex)} title="Réduire depuis la gauche">▷</button>}<button type="button" className="cell-delete-button" onClick={() => deleteCell(dayIndex, hourIndex)} title="Supprimer la cellule">×</button>{cell.span > 1 && <button type="button" className="span-remove-button" onClick={() => shrinkCellRight(dayIndex, hourIndex)} title="Réduire depuis la droite">◁</button>}<button type="button" onClick={() => extendCellRight(dayIndex, hourIndex)} disabled={!canExtendRight(row, hourIndex)}>›</button></div>}
                 <TimetableClassInput className="timetable-class-input" span={cell.span} value={cell.text} onChange={(e) => updateCellText(dayIndex, hour, e.target.value)} onClick={(e) => e.stopPropagation()} onDragStart={(e) => e.preventDefault()} onKeyDown={validateOnEnter} placeholder="Classe" aria-label="Classe" />
                 {hasClass && <label className="room-control" onClick={(e) => e.stopPropagation()}><span>Salle</span><input type="number" min="1" max="80" value={cell.room} onChange={(e) => updateRoom(dayIndex, hour, e.target.value)} onKeyDown={validateOnEnter} /></label>}
@@ -588,9 +663,9 @@ export default function Tab({ onClassGroupsChange }) {
         </table>
         <div className="total-hours-control"><span>Total heures :</span><strong>{totalHours} h</strong></div>
         <div className="groups-under-timetable" data-cahier-class-groups="true" style={levelGroupsStyle}>
-          {classGroups.map((group, index) => <div key={`${GROUP_TITLES[index]}-${index}`} style={{ minHeight: '192px', padding: '11px 9px', border: '2px solid rgba(17, 17, 17, 0.55)', borderRadius: '14px', background: `linear-gradient(180deg, ${GROUP_COLORS[index]}, white)`, boxShadow: '0 4px 10px rgba(17, 17, 17, 0.12)', overflow: 'hidden' }} onDragOver={(event) => { if (draggedClass) event.preventDefault(); }} onDrop={(event) => { event.preventDefault(); if (draggedClass) moveClassToGroup(draggedClass, index); setDraggedClass(null); }}>
+          {classGroups.map((group, index) => <div key={`${GROUP_TITLES[index]}-${index}`} data-cahier-group-index={index} style={{ minHeight: '192px', padding: '11px 9px', border: '2px solid rgba(17, 17, 17, 0.55)', borderRadius: '14px', background: `linear-gradient(180deg, ${GROUP_COLORS[index]}, white)`, boxShadow: '0 4px 10px rgba(17, 17, 17, 0.12)', overflow: 'hidden' }} onDragOver={(event) => { if (draggedClass) event.preventDefault(); }} onDrop={(event) => { event.preventDefault(); if (draggedClass) moveClassToGroup(draggedClass, index); setDraggedClass(null); }}>
             <div style={levelGroupTitleStyle} contentEditable suppressContentEditableWarning onKeyDown={validateOnEnter}>{GROUP_TITLES[index]}</div>
-            <div style={levelGroupClassesStyle} aria-label={`Classes du groupe ${GROUP_TITLES[index]}`}>{group.classes.length ? group.classes.map((className) => <span className="cahier-class-group-chip" key={className} style={{ ...levelChipStyle, background: getClassColor(className) }} draggable onDragStart={(event) => { event.dataTransfer.effectAllowed = 'move'; event.dataTransfer.setData('text/plain', className); setDraggedClass(className); }} onDragEnd={() => setDraggedClass(null)}><span className="cahier-class-group-name">{className}</span><input className="cahier-class-color-picker no-print" type="color" value={getClassColor(className)} aria-label="Changer la couleur" title="Changer la couleur" draggable={false} onPointerDown={(event) => event.stopPropagation()} onClick={(event) => event.stopPropagation()} onChange={(event) => updateClassColor(className, event.target.value)} /></span>) : null}</div>
+            <div style={levelGroupClassesStyle} aria-label={`Classes du groupe ${GROUP_TITLES[index]}`}>{group.classes.length ? group.classes.map((className) => <span className="cahier-class-group-chip" key={className} style={{ ...levelChipStyle, background: getClassColor(className) }} draggable onDragStart={(event) => { event.dataTransfer.effectAllowed = 'move'; event.dataTransfer.setData('text/plain', className); setDraggedClass(className); }} onDragEnd={() => setDraggedClass(null)} onTouchStart={(event) => beginTouchDrag(event, { kind: 'group', className })} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd} onTouchCancel={handleTouchCancel}><span className="cahier-class-group-name">{className}</span><input className="cahier-class-color-picker no-print" type="color" value={getClassColor(className)} aria-label="Changer la couleur" title="Changer la couleur" draggable={false} onPointerDown={(event) => event.stopPropagation()} onClick={(event) => event.stopPropagation()} onChange={(event) => updateClassColor(className, event.target.value)} /></span>) : null}</div>
           </div>)}
         </div>
         <footer className="cahier-footer"><span>Signature :</span><span>Observations :</span></footer>
