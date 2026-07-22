@@ -55,16 +55,16 @@
 
 /* Séparateurs fixes des deux coupures de la journée (11h–12h et 14h–15h). */
 .cahier-page > .timetable-table thead th:nth-child(5),
-.cahier-page > .timetable-table tbody td:nth-child(5),
 .cahier-page > .timetable-table thead th:nth-child(8),
-.cahier-page > .timetable-table tbody td:nth-child(8) {
+.cahier-page > .timetable-table tbody td:has(> [data-hour-index="3"]),
+.cahier-page > .timetable-table tbody td:has(> [data-hour-index="6"]) {
   border-right: 4px solid #000 !important;
 }
 
 .cahier-page > .timetable-table thead th:nth-child(6),
-.cahier-page > .timetable-table tbody td:nth-child(6),
 .cahier-page > .timetable-table thead th:nth-child(9),
-.cahier-page > .timetable-table tbody td:nth-child(9) {
+.cahier-page > .timetable-table tbody td:has(> [data-hour-index="4"]),
+.cahier-page > .timetable-table tbody td:has(> [data-hour-index="7"]) {
   border-left: 0 !important;
 }
 

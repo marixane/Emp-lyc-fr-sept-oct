@@ -313,6 +313,19 @@ body.cahier-tab-active .exercise-line-count-overlay {
   box-shadow: inset 0 0 0 2px rgba(37, 99, 235, 0.9);
 }
 
+.timetable-cell-content.clickable-cell,
+.cahier-class-group-chip {
+  cursor: pointer !important;
+}
+.timetable-cell-content.clickable-cell:active,
+.cahier-class-group-chip:active {
+  cursor: grabbing !important;
+}
+.timetable-cell-content.selected-cell {
+  outline: 2px solid #2563eb;
+  outline-offset: -2px;
+}
+
 .drop-ready-cell {
   background: white;
 }
