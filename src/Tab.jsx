@@ -528,6 +528,7 @@ export default function Tab({ onClassGroupsChange }) {
     return element ? Number(element.dataset.cahierGroupIndex) : null;
   };
   const beginTouchDrag = (event, payload) => {
+    if (payload.kind === 'group') return beginTouchGroupDrag(event, payload.className);
     if (!isTouchLayout() || event.target.closest('input,textarea,button,.span-tools,.room-control')) return;
     const point = touchPoint(event);
     if (!point) return;
@@ -560,6 +561,16 @@ export default function Tab({ onClassGroupsChange }) {
       state.target = target;
       setDragOverCell(target ? `${target.dayIndex}-${target.hourIndex}` : null);
     } else state.target = targetGroupAtPoint(point);
+  };
+  const beginTouchGroupDrag = (event, className) => {
+    if (!isTouchLayout() || event.target.closest('input,textarea,button,.span-tools,.room-control')) return;
+    const point = touchPoint(event);
+    if (!point) return;
+    clearTouchDrag();
+    touchDragRef.current = { kind: 'group', className, startX: point.clientX, startY: point.clientY, active: true, target: null };
+    document.body.classList.add('mobile-touch-drag-active');
+    setDraggedClass(className);
+    event.preventDefault();
   };
   const handleTouchEnd = (event) => {
     const state = touchDragRef.current;
