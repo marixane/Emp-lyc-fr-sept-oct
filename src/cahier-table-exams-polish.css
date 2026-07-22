@@ -53,6 +53,21 @@
   border-color: rgba(17, 24, 39, 0.42) !important;
 }
 
+/* Séparateurs fixes des deux coupures de la journée (11h–12h et 14h–15h). */
+.cahier-page > .timetable-table thead th:nth-child(5),
+.cahier-page > .timetable-table tbody td:nth-child(5),
+.cahier-page > .timetable-table thead th:nth-child(8),
+.cahier-page > .timetable-table tbody td:nth-child(8) {
+  border-right: 4px solid #000 !important;
+}
+
+.cahier-page > .timetable-table thead th:nth-child(6),
+.cahier-page > .timetable-table tbody td:nth-child(6),
+.cahier-page > .timetable-table thead th:nth-child(9),
+.cahier-page > .timetable-table tbody td:nth-child(9) {
+  border-left: 0 !important;
+}
+
 .cahier-page > .timetable-table .timetable-cell-content {
   border-radius: 10px !important;
   transition: box-shadow 120ms ease, transform 120ms ease !important;
